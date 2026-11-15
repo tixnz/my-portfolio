@@ -12,11 +12,15 @@ const cases = defineCollection({
     z.object({
       lang: z.enum(['no', 'en']).default('no'),
       title: z.string(),
-      subtitle: z.string(),
-      cover: image(),
-      coverAlt: z.string(),
+      /** Optional: UNG + MUNCH uses a logo title with no subtitle */
+      subtitle: z.string().optional(),
+      /** Hero image on the case page. Required once the case page is built (phase 4/5). */
+      cover: image().optional(),
+      coverAlt: z.string().optional(),
       cardImage: image(),
       cardImageAlt: z.string(),
+      /** Card title if it differs from the case title, e.g. "UX Cup" */
+      cardTitle: z.string().optional(),
       /** Card meta line, e.g. "2025 · App · Internship" */
       meta: z.string(),
       /** Card description under the title */

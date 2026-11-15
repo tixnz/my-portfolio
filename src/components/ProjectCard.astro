@@ -123,6 +123,10 @@ const widths = size === 'wide' ? [460, 690, 1380] : [420, 620, 1240];
     color: var(--color-ink-strong);
     transition: color var(--duration-slow) var(--ease-in-out);
   }
+  /* Tall cards use a smaller title (Figma: 28 px) */
+  .card--tall .title {
+    font-size: var(--text-h3);
+  }
   .cta {
     flex-shrink: 0;
     font-size: var(--text-nav);
