@@ -33,6 +33,15 @@ const cases = defineCollection({
         .array(z.object({ label: z.string(), value: z.string() }))
         .min(1)
         .max(6),
+      /** Large centred statement after the facts row */
+      statement: z.string().optional(),
+      /** Intro paragraph under the statement */
+      intro: z.string().optional(),
+      /** Table of contents: section ids in the MDX body and their short labels */
+      toc: z.array(z.object({ id: z.string(), label: z.string() })).default([]),
+      /** Logo above the table of contents (e.g. SATS wordmark) */
+      tocLogo: image().optional(),
+      tocLogoAlt: z.string().optional(),
       /** Slug of the case linked under "Neste prosjekt" */
       next: z.string().optional(),
       draft: z.boolean().default(false),

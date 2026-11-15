@@ -1,0 +1,22 @@
+---
+import { getCollection, render } from 'astro:content';
+import CaseLayout from '../../layouts/CaseLayout.astro';
+
+export async function getStaticPaths() {
+  const cases = await getCollection('cases', ({ data }) => !data.draft);
+  // A case gets a page once its cover is in place (the body is being written case by case).
+  return cases
+    .filter((entry) => entry.data.cover)
+    .map((entry) => ({
+      params: { slug: entry.id },
+      props: { entry, next: cases.find((c) => c.id === entry.data.next) },
+    }));
+}
+
+const { entry, next } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<CaseLayout entry={entry} next={next}>
+  <Content />
+</CaseLayout>

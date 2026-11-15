@@ -1,0 +1,31 @@
+---
+/**
+ * Numbered case section (Figma "Section/…", e.g. 251:1387).
+ * Heading, then groups 48 px apart, 120 px space below.
+ */
+import CaseSectionHeading from '../CaseSectionHeading.astro';
+
+interface Props {
+  /** Anchor used by the table of contents */
+  id: string;
+  number: string;
+  label?: string;
+  title: string;
+}
+const { id, number, label, title } = Astro.props;
+---
+
+<section class="case-section prose" id={id} aria-labelledby={`${id}-heading`}>
+  <CaseSectionHeading number={number} label={label} id={`${id}-heading`}>{title}</CaseSectionHeading>
+  <slot />
+</section>
+
+<style>
+  .case-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+    padding-bottom: var(--space-section);
+    scroll-margin-top: var(--space-xl);
+  }
+</style>

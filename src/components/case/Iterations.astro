@@ -1,0 +1,135 @@
+---
+/**
+ * Iteration progression: steps side by side with accent arrows between them.
+ *   phone – screen in the code-built iPhone frame (Figma "progresjon", 269:1721)
+ *   card  – a cropped component on a light surface (Figma 270:1892)
+ * On phones the steps stack and the arrows point down.
+ */
+import { Image } from 'astro:assets';
+import PhoneFrame from '../PhoneFrame.astro';
+import { resolveImage, type ImageRef } from '../../lib/images';
+
+interface Props {
+  variant?: 'phone' | 'card';
+  items: { label: string; title?: string; src: ImageRef; alt: string; text: string }[];
+}
+const { variant = 'phone', items } = Astro.props;
+---
+
+<ol class:list={['iterations', `iterations--${variant}`]}>
+  {
+    items.map((item, i) => (
+      <>
+        {i > 0 && (
+          <li class="arrow" aria-hidden="true">
+            <span>→</span>
+          </li>
+        )}
+        <li class="step">
+          <p class="label">{item.label}</p>
+          {item.title && <h4 class="title">{item.title}</h4>}
+          <div class="media">
+            {variant === 'phone' ? (
+              <PhoneFrame image={resolveImage(item.src)} alt={item.alt} width={279} />
+            ) : (
+              <Image
+                src={resolveImage(item.src)}
+                alt={item.alt}
+                widths={[293, 586]}
+                sizes="293px"
+                class="card-img"
+              />
+            )}
+          </div>
+          <p class="text">{item.text}</p>
+        </li>
+      </>
+    ))
+  }
+</ol>
+
+<style>
+  .iterations {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-m);
+    padding: 0;
+    list-style: none;
+  }
+  .step {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--space-s);
+    min-width: 0;
+    padding-top: 4px;
+  }
+  .label {
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    line-height: normal;
+    color: var(--color-accent);
+  }
+  .title {
+    font-size: 24px;
+    font-weight: var(--weight-medium);
+    line-height: 1.45;
+    color: var(--color-ink);
+  }
+  .text {
+    font-size: var(--text-fact);
+    line-height: 1.45;
+    color: var(--color-ink-strong);
+  }
+  .arrow {
+    flex: 0 0 25px;
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+    line-height: 1.45;
+    color: var(--color-accent);
+  }
+  .iterations--phone .arrow {
+    padding-top: 360px;
+  }
+  .iterations--card .arrow {
+    padding-top: 150px;
+  }
+
+  .media {
+    display: flex;
+    justify-content: center;
+  }
+  .iterations--phone .media {
+    padding-block: var(--space-s);
+  }
+  .iterations--card .media {
+    align-items: center;
+    height: 240px;
+    padding: var(--space-l) var(--space-m);
+    border-radius: var(--radius-xs);
+    background: var(--color-card);
+  }
+  .card-img {
+    width: 100%;
+    max-width: 293px;
+    height: auto;
+    border-radius: 7px;
+  }
+
+  @media (max-width: 767px) {
+    .iterations {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .arrow {
+      flex-basis: auto;
+      align-self: center;
+      transform: rotate(90deg);
+    }
+    .iterations--phone .arrow,
+    .iterations--card .arrow {
+      padding-top: 0;
+    }
+  }
+</style>

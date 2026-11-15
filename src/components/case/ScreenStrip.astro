@@ -1,0 +1,193 @@
+---
+/**
+ * Horizontal screen strip (Figma "strip (horisontal scroll)", 251:1351).
+ * Scrolls sideways: swipe/trackpad, arrow buttons on desktop, or the keyboard
+ * when the strip has focus. Bleeds past the right page margin.
+ * Caption row on the 288 px inset with a hint and the arrow buttons.
+ */
+import { Image } from 'astro:assets';
+import { resolveImage, type ImageRef } from '../../lib/images';
+import { t } from '../../i18n/ui.no';
+
+interface Props {
+  items: { src: ImageRef; alt: string }[];
+  /** Item size in px on desktop (Figma: 263.78 × 549) */
+  itemWidth?: number;
+  itemHeight?: number;
+  gap?: number;
+  caption?: string;
+  label?: string;
+}
+
+const {
+  items,
+  itemWidth = 264,
+  itemHeight = 549,
+  gap = 20,
+  caption,
+  label = caption ?? '',
+} = Astro.props;
+---
+
+<div class="strip-block" data-strip>
+  <ul
+    class="strip"
+    style={`--item-w: ${itemWidth}px; --item-ratio: ${itemWidth} / ${itemHeight}; --gap: ${gap}px`}
+    tabindex="0"
+    aria-label={label}
+    data-strip-track
+  >
+    {
+      items.map((item) => (
+        <li class="item">
+          <Image
+            src={resolveImage(item.src)}
+            alt={item.alt}
+            widths={[itemWidth, itemWidth * 2]}
+            sizes={`${itemWidth}px`}
+            class="img"
+          />
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="caption-row case-column">
+    {caption && <p class="caption">{caption}</p>}
+    <p class="hint" aria-hidden="true">{t('strip.hint')}</p>
+    <div class="arrows">
+      <button type="button" class="arrow" data-strip-prev aria-label={t('strip.prev')}>←</button>
+      <button type="button" class="arrow" data-strip-next aria-label={t('strip.next')}>→</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .strip {
+    display: flex;
+    gap: var(--gap);
+    margin: 0 calc(-1 * var(--page-margin)) 0 0;
+    padding: 0 var(--page-margin) 0 0;
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+  .strip::-webkit-scrollbar {
+    display: none;
+  }
+  .strip:focus-visible {
+    outline-offset: 4px;
+  }
+  .item {
+    flex: 0 0 var(--item-w);
+    aspect-ratio: var(--item-ratio);
+    scroll-snap-align: start;
+  }
+  .img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .caption-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-l);
+    margin-top: 40px;
+  }
+  .caption,
+  .hint {
+    font-size: var(--text-caption);
+    line-height: 1.45;
+    white-space: nowrap;
+  }
+  .caption {
+    color: var(--color-label);
+  }
+  .hint {
+    color: var(--color-accent);
+  }
+  .arrows {
+    display: flex;
+    gap: var(--space-s);
+    margin-left: auto;
+  }
+  .arrow {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    padding: 0 0 2px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: transparent;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--color-ink);
+    cursor: pointer;
+    transition:
+      color var(--duration) var(--ease-out),
+      border-color var(--duration) var(--ease-out);
+  }
+  .arrow:hover:not(:disabled) {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+  .arrow:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .strip {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* Touch: swipe only */
+  @media (max-width: 767px) {
+    .item {
+      flex-basis: min(var(--item-w), 70vw);
+    }
+    .caption-row {
+      margin-top: var(--space-m);
+      flex-wrap: wrap;
+      gap: var(--space-xs) var(--space-m);
+    }
+    .hint {
+      white-space: normal;
+    }
+    .arrows {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-strip]').forEach((block) => {
+    const track = block.querySelector<HTMLElement>('[data-strip-track]')!;
+    const prev = block.querySelector<HTMLButtonElement>('[data-strip-prev]')!;
+    const next = block.querySelector<HTMLButtonElement>('[data-strip-next]')!;
+
+    const step = () => {
+      const item = track.querySelector<HTMLElement>('li');
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return item ? item.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
+    };
+
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth - 1;
+      prev.disabled = track.scrollLeft <= 0;
+      next.disabled = track.scrollLeft >= max;
+    };
+
+    prev.addEventListener('click', () => track.scrollBy({ left: -step() }));
+    next.addEventListener('click', () => track.scrollBy({ left: step() }));
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  });
+</script>

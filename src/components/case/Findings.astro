@@ -1,0 +1,64 @@
+---
+/**
+ * Findings with big words or numbers (Figma "Funn (store tall)", 251:1412).
+ * Columns with a 2 px top rule: 44 px accent value, caps source, 18 px text.
+ */
+interface Props {
+  items: { value: string; source?: string; text: string }[];
+}
+const { items } = Astro.props;
+---
+
+<ul class="findings" style={`--cols: ${items.length}`}>
+  {
+    items.map((item) => (
+      <li class="finding">
+        <p class="value">{item.value}</p>
+        {item.source && <p class="source">{item.source}</p>}
+        <p class="text">{item.text}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .findings {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: var(--space-l);
+    padding: 0;
+    list-style: none;
+  }
+  .finding {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+    padding-top: var(--space-l);
+    border-top: 2px solid var(--color-ink);
+  }
+  .value {
+    font-size: var(--text-stat);
+    font-weight: var(--weight-medium);
+    line-height: 1.15;
+    color: var(--color-accent);
+  }
+  .source {
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    line-height: normal;
+    color: var(--color-accent);
+  }
+  .text {
+    font-size: var(--text-fact);
+    line-height: 1.45;
+    color: var(--color-ink-strong);
+  }
+
+  @media (max-width: 767px) {
+    .findings {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-xl);
+    }
+  }
+</style>

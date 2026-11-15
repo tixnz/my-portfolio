@@ -1,0 +1,238 @@
+---
+/**
+ * Case page template (Figma "Case – SATS Quests v6 – desktop", 251:1303).
+ *
+ *   Title       back link, 112 px title, 30 px subtitle
+ *   Hero        cover image, 1376 × 720
+ *   Fakta       FactsRow
+ *   Intro       44 px centred statement + 22 px intro (760 wide)
+ *   Content     MDX body. <Result> spans the full width; <Section>s sit in the
+ *               1088 px column next to the sticky table of contents.
+ *   Neste       link to the next case
+ */
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from './BaseLayout.astro';
+import FactsRow from '../components/FactsRow.astro';
+import CaseToc from '../components/case/CaseToc.astro';
+import NextProject from '../components/case/NextProject.astro';
+import { t } from '../i18n/ui.no';
+
+interface Props {
+  entry: CollectionEntry<'cases'>;
+  next?: CollectionEntry<'cases'>;
+}
+
+const { entry, next } = Astro.props;
+const d = entry.data;
+---
+
+<BaseLayout title={d.title} description={d.subtitle ?? d.summary} theme={d.theme}>
+  <article class="case">
+    <header class="page title-block">
+      <a class="back" href="/#prosjekter">{t('case.allProjects')}</a>
+      <h1 class="title">{d.title}</h1>
+      {d.subtitle && <p class="subtitle">{d.subtitle}</p>}
+    </header>
+
+    {
+      d.cover && (
+        <div class="page">
+          <Image
+            src={d.cover}
+            alt={d.coverAlt ?? ''}
+            widths={[688, 1376, 2752]}
+            sizes="(max-width: 1440px) calc(100vw - 2 * var(--page-margin)), 1376px"
+            class="hero"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      )
+    }
+
+    <div class="page">
+      <FactsRow facts={d.facts} />
+    </div>
+
+    {
+      (d.statement || d.intro) && (
+        <div class="page intro">
+          {d.statement && <p class="statement">{d.statement}</p>}
+          {d.intro && <p class="intro-text">{d.intro}</p>}
+        </div>
+      )
+    }
+
+    <div class:list={['page', 'case-content', { 'has-toc': d.toc.length > 0 }]}>
+      {d.toc.length > 0 && <CaseToc items={d.toc} logo={d.tocLogo} logoAlt={d.tocLogoAlt} />}
+      <slot />
+    </div>
+
+    {next && <NextProject title={next.data.title} href={`/prosjekter/${next.id}/`} />}
+  </article>
+</BaseLayout>
+
+<style>
+  /* Title */
+  .title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-top: 96px;
+    padding-bottom: var(--space-2xl);
+  }
+  .back {
+    align-self: flex-start;
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    line-height: normal;
+    color: var(--color-ink-strong);
+    transition: color var(--duration) var(--ease-out);
+  }
+  .back:hover {
+    color: var(--color-accent);
+  }
+  .title {
+    font-size: clamp(3rem, 7.78vw, 7rem); /* 112 px at 1440 */
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--color-ink-strong);
+  }
+  .subtitle {
+    max-width: 900px;
+    font-size: clamp(1.25rem, 2.1vw, 1.875rem); /* 30 px */
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--color-ink-strong);
+  }
+
+  /* Hero */
+  .hero {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1376 / 720;
+    object-fit: cover;
+  }
+
+  /* Intro */
+  .intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3xl);
+    padding-block: var(--space-section);
+  }
+  .statement {
+    max-width: 1050px;
+    font-size: clamp(1.75rem, 3.06vw, 2.75rem); /* 44 px */
+    line-height: 1.2;
+    text-align: center;
+    text-wrap: balance;
+    color: var(--color-ink);
+  }
+  .intro-text {
+    max-width: var(--text-measure);
+    font-size: var(--text-body);
+    line-height: 1.5;
+    color: var(--color-ink);
+  }
+
+  /*
+   * Content grid: TOC column (232) + gap (56) + main column (1088).
+   * <Result> spans both columns; the TOC starts on the row after it.
+   */
+  .case-content {
+    display: grid;
+    grid-template-columns: 232px minmax(0, 1fr);
+    column-gap: 56px;
+    align-items: start;
+  }
+  .case-content > :global(*) {
+    grid-column: 2;
+  }
+  .case-content > :global(.result) {
+    grid-column: 1 / -1;
+  }
+  .case-content > :global(.toc) {
+    grid-column: 1;
+    grid-row: 1 / span 40;
+  }
+  .case-content:not(.has-toc) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .case-content:not(.has-toc) > :global(*) {
+    grid-column: 1;
+  }
+  /*
+   * With a result block: the TOC starts on the row after it, and there is
+   * 120 px between the result and the sections + TOC. Without one, the
+   * 120 px goes above the content instead. (Fully :global – Astro drops
+   * scoped :has() and sibling selectors that mix scoped and global parts.)
+   */
+  :global(.case-content:has(> .result) > .toc) {
+    grid-row: 2 / span 40;
+  }
+  :global(.case-content > .result + .case-section),
+  :global(.case-content:has(> .result) > .toc) {
+    margin-top: var(--space-section);
+  }
+  :global(.case-content:not(:has(> .result))) {
+    padding-top: var(--space-section);
+  }
+
+  /*
+   * Long-form text written in MDX. :where() keeps specificity at zero so the
+   * components' own scoped styles (captions, labels) always win.
+   */
+  :global(:where(.prose) p) {
+    font-size: var(--text-body);
+    line-height: 1.55;
+    color: var(--color-body);
+  }
+  :global(:where(.prose) p.small) {
+    font-size: var(--text-fact);
+    line-height: 1.45;
+    color: var(--color-ink-strong);
+  }
+  :global(:where(.prose) h3) {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-ink-strong);
+  }
+  :global(:where(.prose) strong) {
+    font-weight: var(--weight-medium);
+    color: var(--color-ink-strong);
+  }
+
+  @media (max-width: 1023px) {
+    .case-content {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .case-content > :global(*) {
+      grid-column: 1;
+    }
+    .case-content > :global(.toc) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .title-block {
+      gap: var(--space-m);
+      padding-top: var(--space-2xl);
+      padding-bottom: var(--space-xl);
+    }
+    .intro {
+      gap: var(--space-xl);
+      align-items: stretch;
+    }
+    .statement {
+      text-align: left;
+    }
+  }
+</style>

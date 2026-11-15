@@ -1,0 +1,98 @@
+---
+/**
+ * Image figure with an optional caption.
+ *   single  – one image (Figma 251:1486, 640 high)
+ *   pair    – two equal images, 16 px apart (Figma 265:1719, 402 high)
+ *   feature – large image + a 372 px column of two stacked images (Figma 264:1746, 360 high)
+ * Images are cropped to fill (object-fit: cover) like the Figma frames.
+ * On phones the images stack and keep their own proportions.
+ */
+import { Image } from 'astro:assets';
+import { resolveImage, type ImageRef } from '../../lib/images';
+
+interface Props {
+  images: { src: ImageRef; alt: string }[];
+  layout?: 'single' | 'pair' | 'feature';
+  /** Row height in px on desktop */
+  height?: number;
+  caption?: string;
+}
+
+const { images, layout = 'single', height = 480, caption } = Astro.props;
+const resolved = images.map((img) => ({ ...img, src: resolveImage(img.src) }));
+const sizes = layout === 'single' ? '(max-width: 1023px) 100vw, 1088px' : '(max-width: 767px) 100vw, 700px';
+---
+
+<figure class:list={['figure', `figure--${layout}`]} style={`--h: ${height}px`}>
+  <div class="images">
+    {
+      layout === 'feature' ? (
+        <>
+          <Image src={resolved[0].src} alt={resolved[0].alt} widths={[700, 1400]} sizes={sizes} class="img main" />
+          <div class="col">
+            {resolved.slice(1).map((img) => (
+              <Image src={img.src} alt={img.alt} widths={[372, 744]} sizes="(max-width: 767px) 100vw, 372px" class="img" />
+            ))}
+          </div>
+        </>
+      ) : (
+        resolved.map((img) => (
+          <Image src={img.src} alt={img.alt} widths={[544, 1088, 2176]} sizes={sizes} class="img" />
+        ))
+      )
+    }
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .figure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+    margin: 0;
+  }
+  .images {
+    display: flex;
+    gap: var(--space-m);
+    height: var(--h);
+  }
+  .img {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-xs);
+  }
+  .col {
+    display: flex;
+    flex: 0 0 372px;
+    flex-direction: column;
+    gap: var(--space-m);
+  }
+  .col .img {
+    width: 100%;
+    min-height: 0;
+  }
+  figcaption {
+    font-size: var(--text-caption);
+    line-height: normal;
+    color: var(--color-label);
+  }
+
+  @media (max-width: 767px) {
+    .images,
+    .col {
+      flex-direction: column;
+      height: auto;
+    }
+    .col {
+      flex-basis: auto;
+    }
+    .img {
+      flex: none;
+      width: 100%;
+      height: auto;
+    }
+  }
+</style>

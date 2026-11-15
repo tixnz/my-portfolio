@@ -1,0 +1,50 @@
+---
+/** Columns with an accent caps label over an 18 px text (Figma "columns", 251:1431). */
+interface Props {
+  items: { label: string; text: string }[];
+}
+const { items } = Astro.props;
+---
+
+<dl class="columns" style={`--cols: ${items.length}`}>
+  {
+    items.map((item) => (
+      <div class="col">
+        <dt>{item.label}</dt>
+        <dd>{item.text}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .columns {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: 40px;
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    line-height: 1.5;
+  }
+  dt {
+    font-size: var(--text-small);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  dd {
+    margin: 0;
+    font-size: var(--text-fact);
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 767px) {
+    .columns {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-l);
+    }
+  }
+</style>

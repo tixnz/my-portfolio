@@ -1,0 +1,43 @@
+---
+/**
+ * Result block (Figma "Resultat (lys)", 251:1345). Full page width; the
+ * heading and lead sit on the 288 px inset, the media below can bleed.
+ */
+import CaseSectionHeading from '../CaseSectionHeading.astro';
+
+interface Props {
+  id: string;
+  number: string;
+  title: string;
+  lead?: string;
+}
+const { id, number, title, lead } = Astro.props;
+---
+
+<section class="result" id={id} aria-labelledby={`${id}-heading`}>
+  <div class="text case-column">
+    <CaseSectionHeading number={number} id={`${id}-heading`}>{title}</CaseSectionHeading>
+    {lead && <p class="lead">{lead}</p>}
+  </div>
+  <slot />
+</section>
+
+<style>
+  .result {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    scroll-margin-top: var(--space-xl);
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .lead {
+    max-width: var(--text-measure);
+    font-size: var(--text-body);
+    line-height: 1.45;
+    color: var(--color-body);
+  }
+</style>
