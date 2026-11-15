@@ -25,8 +25,8 @@ interface Props {
 
 const { entry, next } = Astro.props;
 const d = entry.data;
-/** Trial: airier spacing, SATS Quests only for now. Add ?original to the URL to compare. */
-const airy = entry.id === 'sats-quests';
+/** Airier spacing, rolled out case by case. Add ?original to the URL to compare. */
+const airy = ['sats-quests', 'del-for-tv-aksjonen'].includes(entry.id);
 ---
 
 <BaseLayout
