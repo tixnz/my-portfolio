@@ -23,7 +23,12 @@ const isCurrent = (href: string) => !href.startsWith('/#') && path.startsWith(hr
         {
           nav.map((item) => (
             <li>
-              <NavLink href={item.href} label={item.label} current={isCurrent(item.href)} />
+              <NavLink
+                href={item.href}
+                label={item.label}
+                current={isCurrent(item.href)}
+                file={'file' in item && item.file}
+              />
             </li>
           ))
         }

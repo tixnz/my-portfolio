@@ -1,16 +1,29 @@
 ---
 /**
  * Nav/lenke (Figma 394:8524). Ink by default, accent on hover, no underline.
+ * file: the link opens a document (the CV PDF) in a new tab, announced to
+ * screen readers.
  */
+import { t } from '../i18n/ui.no';
+
 interface Props {
   href: string;
   label: string;
   current?: boolean;
+  file?: boolean;
 }
-const { href, label, current = false } = Astro.props;
+const { href, label, current = false, file = false } = Astro.props;
 ---
 
-<a class="nav-link" href={href} aria-current={current ? 'page' : undefined}>{label}</a>
+<a
+  class="nav-link"
+  href={href}
+  aria-current={current ? 'page' : undefined}
+  {...(file ? { target: '_blank', rel: 'noopener', type: 'application/pdf' } : {})}
+>
+  {label}
+  {file && <span class="visually-hidden"> {t('nav.pdf')}</span>}
+</a>
 
 <style>
   .nav-link {

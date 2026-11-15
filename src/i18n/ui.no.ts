@@ -10,6 +10,7 @@ export const ui = {
   'nav.about': 'Om meg',
   'nav.cv': 'CV',
   'nav.contact': 'Kontakt',
+  'nav.pdf': '(PDF, åpnes i ny fane)',
   'nav.home': 'Til forsiden',
   'nav.menuOpen': 'Meny',
   'nav.menuClose': 'Lukk',

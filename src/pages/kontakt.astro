@@ -1,0 +1,77 @@
+---
+/**
+ * Kontakt (Figma "Kontakt – desktop", 132:662).
+ * 124 px "TA KONTAKT", then the e-mail (underlined) and phone at 48 px.
+ * The page fills at least one screen so the footer sits at the bottom.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contact } from '../content/about';
+import { site } from '../content/site';
+import { t } from '../i18n/ui.no';
+
+const tel = site.phone.replace(/\s+/g, '');
+---
+
+<BaseLayout title={t('nav.contact')} description={`${site.email} · ${site.phone}`}>
+  <section class="page contact">
+    <h1 class="heading">{contact.heading}</h1>
+    <ul class="links">
+      <li><a class="link link--email" href={`mailto:${site.email}`}>{site.email}</a></li>
+      <li><a class="link" href={`tel:${tel}`}>{site.phone}</a></li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact {
+    display: flex;
+    flex-direction: column;
+    gap: 88px;
+    /* Screen height minus header (104) and footer (82) */
+    min-height: max(560px, calc(100svh - 186px));
+    padding-top: var(--space-section);
+    padding-bottom: 96px;
+  }
+  .heading {
+    font-size: min(124px, 8.612vw);
+    font-weight: var(--weight-medium);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--color-ink-strong);
+  }
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 0;
+    list-style: none;
+  }
+  .link {
+    font-size: clamp(1.5rem, 3.33vw, 3rem); /* 48 px */
+    line-height: 1.5;
+    color: var(--color-ink-strong);
+    transition: color var(--duration) var(--ease-out);
+  }
+  .link--email {
+    text-decoration: underline;
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.12em;
+  }
+  .link:hover {
+    color: var(--color-accent);
+  }
+  @media (max-width: 767px) {
+    .contact {
+      justify-content: flex-start;
+      gap: var(--space-2xl);
+      padding-top: var(--space-3xl);
+    }
+    .heading {
+      font-size: clamp(3rem, 14vw, 5rem);
+    }
+    .link {
+      overflow-wrap: anywhere;
+    }
+  }
+</style>

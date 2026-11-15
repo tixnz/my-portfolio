@@ -1,0 +1,93 @@
+---
+/**
+ * Om meg (Figma "Om meg – desktop", 124:661).
+ * 124 px "Hei!" over a 32 px paragraph (880 wide) that ends in a softer colour,
+ * with a 460 × 600 portrait bottom-aligned on the right.
+ */
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { about } from '../content/about';
+import { t } from '../i18n/ui.no';
+---
+
+<BaseLayout title={t('nav.about')} description={about.text}>
+  <section class="page about">
+    <div class="text">
+      <h1 class="heading">{about.heading}</h1>
+      <p class="body">
+        {about.text}
+        <span class="aside">{about.aside} <span class="emphasis">{about.asideEmphasis}</span></span>
+      </p>
+    </div>
+    <Image
+      src={about.portrait}
+      alt={about.portraitAlt}
+      widths={[460, 683]}
+      sizes="(max-width: 767px) 100vw, 460px"
+      class="portrait"
+      loading="eager"
+    />
+  </section>
+</BaseLayout>
+
+<style>
+  .about {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-xl);
+    padding-top: var(--space-section);
+    padding-bottom: 96px;
+  }
+  .text {
+    display: flex;
+    flex: 0 1 880px;
+    flex-direction: column;
+    gap: var(--space-2xl);
+    min-width: 0;
+    color: var(--color-ink-strong);
+  }
+  .heading {
+    font-size: min(124px, 8.612vw);
+    font-weight: var(--weight-medium);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+  .body {
+    font-size: clamp(1.375rem, 2.22vw, 2rem); /* 32 px at 1440 */
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+  .aside {
+    color: color-mix(in srgb, var(--color-ink-strong) 60%, transparent);
+  }
+  .emphasis {
+    text-decoration: underline;
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.15em;
+  }
+  .portrait {
+    flex: 0 0 460px;
+    width: 460px;
+    height: auto;
+    aspect-ratio: 460 / 600;
+    object-fit: cover;
+    object-position: bottom;
+  }
+
+  @media (max-width: 1023px) {
+    .about {
+      flex-direction: column-reverse;
+      align-items: stretch;
+      gap: var(--space-xl);
+      padding-top: var(--space-2xl);
+    }
+    .heading {
+      font-size: clamp(3.5rem, 14vw, 7.75rem);
+    }
+    .portrait {
+      flex-basis: auto;
+      width: min(460px, 100%);
+    }
+  }
+</style>

@@ -4,15 +4,19 @@ import { t } from '../i18n/ui.no';
 export const site = {
   name: 'Zehra Tien Ayden',
   lang: 'no',
-  // Placeholder contact details until final text is in.
-  email: 'hei@example.com',
-  linkedin: 'https://www.linkedin.com/',
+  email: 'zehratieen@gmail.com',
+  phone: '+47 482 74 967',
+  /**
+   * Resume PDF. Put the file in public/cv/ with this name and the CV link in
+   * the menu starts working; no code change needed.
+   */
+  cvUrl: '/cv/zehra-tien-ayden-cv.pdf',
 };
 
 export const nav = [
   { href: '/#prosjekter', label: t('nav.projects') },
   { href: '/om-meg/', label: t('nav.about') },
-  { href: '/cv/', label: t('nav.cv') },
+  { href: site.cvUrl, label: t('nav.cv'), file: true },
 ] as const;
 
 export const contactLink = { href: '/kontakt/', label: t('nav.contact') } as const;
