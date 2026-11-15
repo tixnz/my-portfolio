@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Your Name</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <nav class="site-nav">
+      <a href="index.html" class="logo">Your Name</a>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="mailto:you@example.com">Contact</a></li>
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <h1><span class="todo">[TODO]</span> About you — a short headline (e.g. "Product designer focused on fintech and trust").</h1>
+      <p><span class="todo">[TODO]</span> A few paragraphs: your background, how you got into design, what you care about, and what you're looking for next. Keep it conversational — this is the one place your personality shows.</p>
+    </section>
+
+    <section class="case-section">
+      <h2>Experience</h2>
+      <div class="placeholder-block">
+        List roles: Company — Title — Years. One line on what you owned. Keep it scannable, link a resume/PDF if you have one.
+      </div>
+    </section>
+
+    <section class="case-section">
+      <h2>Tools &amp; skills</h2>
+      <div class="placeholder-block">
+        Figma, prototyping, research methods, front-end (if any), whatever is actually relevant.
+      </div>
+    </section>
+
+    <footer>
+      <div>© <span id="year"></span> Your Name. Built with care.</div>
+    </footer>
+  </div>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

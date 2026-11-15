@@ -1,0 +1,169 @@
+---
+/**
+ * Internal preview of the shared components (not linked, noindex).
+ * The copy here is sample text from the Figma frames, only for checking layout.
+ * Add ?tema=mørk to preview the dark theme.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import CaseSectionHeading from '../components/CaseSectionHeading.astro';
+import FactsRow from '../components/FactsRow.astro';
+import LightCard from '../components/LightCard.astro';
+import DecisionBlock from '../components/DecisionBlock.astro';
+import PhoneFrame from '../components/PhoneFrame.astro';
+import BrowserFrame from '../components/BrowserFrame.astro';
+
+export const prerender = true;
+
+const facts = [
+  { label: 'Rolle', value: 'UX-designer' },
+  { label: 'Varighet', value: 'Juni – August 2025' },
+  { label: 'Team', value: '1 UX-designer, 4 utviklere og 1 produktleder' },
+  { label: 'Verktøy', value: 'Figma' },
+  { label: 'Ansvarsområder', value: 'Workshops, brukertesting, wireframing og prototyping' },
+];
+---
+
+<BaseLayout title="Komponenter" noindex>
+  <div class="page stack">
+    <section>
+      <p class="label demo-label">Fakta</p>
+      <FactsRow facts={facts} />
+    </section>
+
+    <section class="case-column">
+      <p class="label demo-label">Seksjonsoverskrift</p>
+      <CaseSectionHeading number="02" label="Innsikt" id="innsikt">
+        Jeg måtte forstå hvem brukerne er fra et helhetlig perspektiv.
+      </CaseSectionHeading>
+    </section>
+
+    <section>
+      <p class="label demo-label">Prosjektkort (bred og høy)</p>
+      <div class="cards">
+        <div class="offset">
+          <ProjectCard
+            href="#"
+            title="SATS Quests"
+            meta="2025 · App · Internship"
+            summary="Et onboarding-program i appen som hjelper nye medlemmer å komme i gang og skape gode treningsvaner"
+            size="wide"
+          />
+        </div>
+        <ProjectCard
+          href="#"
+          title="Del for TV-aksjonen"
+          meta="2024 · Nettside · NRK via Computas"
+          summary="En delingsside og admin-løsning som gjør det enklere for alle å spre budskapet til NRK TV-aksjonen på sosiale medier"
+          size="tall"
+        />
+      </div>
+    </section>
+
+    <section>
+      <p class="label demo-label">Lyse kort</p>
+      <div class="grid-2">
+        <div class="col">
+          <LightCard number="01">Vær-apper brukes i liten grad</LightCard>
+          <LightCard number="02">Eksempeltekst for funn nummer to</LightCard>
+        </div>
+        <ol class="steps">
+          <LightCard as="li" variant="outlined" number="01">
+            Administratoren legger inn bilder og tekst på admin-siden
+          </LightCard>
+          <LightCard as="li" variant="outlined" number="02">
+            Nettsiden viser årets kampanje, tilpasset mobil
+          </LightCard>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <p class="label demo-label">Beslutning</p>
+      <div class="measure-wide">
+        <DecisionBlock label="Beslutning" title="Fleksible oppgaver i stedet for faste">
+          <p>
+            Medlemmene opplevde faste oppgaver som for bundne, så vi lot dem velge neste quest selv.
+          </p>
+        </DecisionBlock>
+      </div>
+    </section>
+
+    <section>
+      <p class="label demo-label">Mockups</p>
+      <div class="mockups">
+        <PhoneFrame width={290} />
+        <PhoneFrame width={200} scrollable scrollLabel="Eksempel på skjerm som kan scrolles" />
+        <BrowserFrame width={620} />
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  // Preview only: ?tema=mørk switches the theme.
+  const theme = new URLSearchParams(location.search).get('tema');
+  if (theme === 'mørk' || theme === 'lys') document.documentElement.dataset.theme = theme;
+</script>
+
+<style>
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xl);
+    padding-block: var(--space-3xl) var(--space-section);
+  }
+  .demo-label {
+    margin-bottom: var(--space-m);
+    color: var(--color-accent);
+  }
+  .cards {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3xl);
+  }
+  .offset {
+    flex: 0 1 690px;
+    padding-top: 40px;
+  }
+  .cards > :global(.card--tall) {
+    flex: 0 1 620px;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 444px 1fr;
+    gap: var(--space-l);
+    align-items: start;
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(2, 236px);
+    gap: var(--space-s);
+    padding: 0;
+    list-style: none;
+  }
+  .measure-wide {
+    max-width: var(--case-content);
+  }
+  .mockups {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2xl);
+    flex-wrap: wrap;
+  }
+  @media (max-width: 767px) {
+    .cards,
+    .grid-2 {
+      display: flex;
+      flex-direction: column;
+    }
+    .offset {
+      padding-top: 0;
+    }
+  }
+</style>

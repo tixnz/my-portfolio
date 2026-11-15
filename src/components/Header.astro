@@ -1,0 +1,118 @@
+---
+/**
+ * Header (Figma 251:1304). Logo, three nav links and the Kontakt link.
+ * Behaviour (Figma annotation): hides when scrolling down, slides back in as
+ * soon as the user scrolls up, always visible at the top. About 200 ms.
+ * The full-screen mobile menu follows in phase 7.
+ */
+import Logo from './Logo.astro';
+import NavLink from './NavLink.astro';
+import NavKontakt from './NavKontakt.astro';
+import { nav, contactLink } from '../content/site';
+import { t } from '../i18n/ui.no';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => !href.startsWith('/#') && path.startsWith(href);
+---
+
+<header class="site-header" data-header>
+  <div class="inner">
+    <Logo />
+    <nav class="nav" aria-label={t('nav.label')}>
+      <ul class="links">
+        {
+          nav.map((item) => (
+            <li>
+              <NavLink href={item.href} label={item.label} current={isCurrent(item.href)} />
+            </li>
+          ))
+        }
+      </ul>
+      <NavKontakt
+        href={contactLink.href}
+        label={contactLink.label}
+        current={isCurrent(contactLink.href)}
+      />
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--color-surface);
+    transition: transform var(--duration) var(--ease-out);
+  }
+  .site-header.is-hidden {
+    transform: translateY(-100%);
+  }
+  .inner {
+    display: flex;
+    align-items: center;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding: 28px var(--page-margin);
+  }
+  .nav {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 0;
+    padding-left: 200px;
+  }
+  .links {
+    display: contents;
+    list-style: none;
+    padding: 0;
+  }
+
+  /* Interim layout until the mobile menu (phase 7) */
+  @media (max-width: 1023px) {
+    .nav {
+      padding-left: var(--space-3xl);
+    }
+  }
+  @media (max-width: 767px) {
+    .inner {
+      padding-block: var(--space-m);
+    }
+    .nav {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: var(--space-s) var(--space-l);
+      padding-left: var(--space-l);
+    }
+    .nav :global(.kontakt) {
+      width: auto;
+      gap: 2px;
+    }
+    .nav :global(.kontakt .row) {
+      gap: var(--space-xs);
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  if (header) {
+    let lastY = window.scrollY;
+
+    const update = () => {
+      const y = Math.max(window.scrollY, 0);
+      if (y === lastY) return;
+      const pastHeader = y > header.offsetHeight;
+      const goingDown = y > lastY;
+      const keepVisible = header.contains(document.activeElement);
+      header.classList.toggle('is-hidden', goingDown && pastHeader && !keepVisible);
+      lastY = y;
+    };
+
+    window.addEventListener('scroll', update, { passive: true });
+
+    // Keyboard users tabbing into the header should always see it.
+    header.addEventListener('focusin', () => header.classList.remove('is-hidden'));
+  }
+</script>

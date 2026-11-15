@@ -1,0 +1,56 @@
+---
+/**
+ * Facts row (Figma "Fakta", 251:1323). Up to five equal columns with a caps
+ * label and an 18 px value. Two columns on mobile.
+ */
+interface Props {
+  facts: { label: string; value: string }[];
+}
+const { facts } = Astro.props;
+---
+
+<dl class="facts" style={`--fact-cols: ${facts.length}`}>
+  {
+    facts.map((fact) => (
+      <div class="fact">
+        <dt>{fact.label}</dt>
+        <dd>{fact.value}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(var(--fact-cols), minmax(0, 1fr));
+    gap: var(--space-xl);
+    padding-top: var(--space-2xl);
+  }
+  .fact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  dt {
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    line-height: normal;
+    color: var(--color-label);
+  }
+  dd {
+    margin: 0;
+    font-size: var(--text-fact);
+    line-height: 1.4;
+    color: var(--color-ink-strong);
+  }
+
+  @media (max-width: 767px) {
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-l) var(--space-m);
+      padding-top: var(--space-xl);
+    }
+  }
+</style>

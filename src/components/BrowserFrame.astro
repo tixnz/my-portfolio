@@ -1,0 +1,127 @@
+---
+/**
+ * Browser mockup (Figma "nettleser/Admin", 333:7469). Window bar with three
+ * dots and an address field, built in code; only the screenshot is an image.
+ * Bar is 46 px tall at 920 px wide and scales with the frame width.
+ *
+ * scrollable: the screenshot scrolls vertically inside the window
+ * (TV-aksjonen result). Pass a full-page screenshot and a fixed height.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  image?: ImageMetadata;
+  alt?: string;
+  /** Rendered width in px on desktop */
+  width?: number;
+  /** Visible screen aspect ratio (width / height) below the bar */
+  screenRatio?: number;
+  scrollable?: boolean;
+  scrollLabel?: string;
+}
+
+const {
+  image,
+  alt = '',
+  width = 920,
+  screenRatio = 920 / 544,
+  scrollable = false,
+  scrollLabel,
+} = Astro.props;
+---
+
+<div class="browser" style={`--browser-w: ${width}px; --screen-ratio: ${screenRatio}`}>
+  <div class="bar" aria-hidden="true">
+    <span class="dots"><span></span><span></span><span></span></span>
+    <span class="address"></span>
+  </div>
+  <div
+    class:list={['screen', { 'screen--scroll': scrollable }]}
+    tabindex={scrollable ? 0 : undefined}
+    role={scrollable ? 'region' : undefined}
+    aria-label={scrollable ? (scrollLabel ?? alt) : undefined}
+  >
+    {
+      image && (
+        <Image
+          src={image}
+          alt={alt}
+          widths={[width, width * 2]}
+          sizes={`(max-width: 767px) 100vw, ${width}px`}
+          class="shot"
+        />
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .browser {
+    container-type: inline-size;
+    width: min(var(--browser-w), 100%);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: calc(8 * 100cqw / 920);
+    background: #fff;
+  }
+  /* 1 Figma px = 100cqw / 920 */
+  .bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: calc(46 * 100cqw / 920);
+    padding-left: calc(16 * 100cqw / 920);
+    background: var(--browser-bar);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .dots {
+    display: flex;
+    gap: calc(7 * 100cqw / 920);
+  }
+  .dots span {
+    width: calc(12 * 100cqw / 920);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #ff5f57;
+  }
+  .dots span:nth-child(2) {
+    background: #febc2e;
+  }
+  .dots span:nth-child(3) {
+    background: #28c840;
+  }
+  .address {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(386 * 100cqw / 920);
+    height: calc(29 * 100cqw / 920);
+    transform: translate(-50%, -50%);
+    border: 1px solid var(--color-border);
+    border-radius: calc(6 * 100cqw / 920);
+    background: var(--browser-field);
+  }
+
+  .screen {
+    aspect-ratio: var(--screen-ratio);
+    overflow: hidden;
+    background: #fff;
+  }
+  .screen :global(.shot) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .screen--scroll {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .screen--scroll :global(.shot) {
+    height: auto;
+  }
+  .screen--scroll:focus-visible {
+    outline-offset: -2px;
+  }
+</style>

@@ -1,0 +1,58 @@
+---
+/**
+ * Light card.
+ *   filled   – Værsel finding card (Figma 369:8626): warm fill, number beside a 20 px medium line.
+ *   outlined – TV-aksjonen flow step (Figma 333:8920): 1 px border, number above an 18 px text.
+ */
+interface Props {
+  number?: string;
+  variant?: 'filled' | 'outlined';
+  as?: 'div' | 'li';
+}
+const { number, variant = 'filled', as: Tag = 'div' } = Astro.props;
+---
+
+<Tag class:list={['light-card', `light-card--${variant}`]}>
+  {number && <span class="number">{number}</span>}
+  <p class="text"><slot /></p>
+</Tag>
+
+<style>
+  .light-card {
+    display: flex;
+    padding: 20px;
+    border-radius: var(--radius-xs);
+  }
+  .number {
+    flex-shrink: 0;
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-label);
+    line-height: normal;
+    color: var(--color-accent);
+  }
+  .text {
+    flex: 1 1 0;
+    min-width: 0;
+    line-height: 1.45;
+    color: var(--color-ink-strong);
+  }
+
+  .light-card--filled {
+    align-items: center;
+    gap: var(--space-m);
+    background: var(--color-card);
+  }
+  .light-card--filled .text {
+    font-size: var(--text-card-lead);
+    font-weight: var(--weight-medium);
+  }
+
+  .light-card--outlined {
+    flex-direction: column;
+    gap: var(--space-xs);
+    border: 1px solid var(--color-card-border);
+  }
+  .light-card--outlined .text {
+    font-size: var(--text-fact);
+  }
+</style>

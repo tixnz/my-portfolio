@@ -1,0 +1,47 @@
+---
+/**
+ * Logo/ZT (Figma 394:8496). Two overlapping letters, 30 × 48 at 32 px.
+ * Swap for the exported SVG when it is in /public (phase 8) if preferred.
+ */
+import { site } from '../content/site';
+import { t } from '../i18n/ui.no';
+
+interface Props {
+  href?: string;
+}
+const { href = '/' } = Astro.props;
+---
+
+<a class="logo" href={href} aria-label={`${site.name}, ${t('nav.home').toLowerCase()}`}>
+  <span class="z" aria-hidden="true">Z</span>
+  <span class="t" aria-hidden="true">T</span>
+</a>
+
+<style>
+  .logo {
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+    width: 30px;
+    height: 48px;
+    font-size: 32px;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    transition: color var(--duration) var(--ease-out);
+  }
+  .logo:hover {
+    color: var(--color-accent);
+  }
+  .z,
+  .t {
+    position: absolute;
+    top: 0;
+  }
+  .z {
+    left: 0;
+  }
+  .t {
+    left: 30%;
+  }
+</style>

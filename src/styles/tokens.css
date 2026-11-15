@@ -1,0 +1,126 @@
+/*
+ * Design tokens.
+ * Source: Figma file xb11oT5lm0az5Ed8CBykUj, "Color" collection (modes Lys / Mørk).
+ * Values marked (frame) are hard-coded in the ready-for-dev frames rather than
+ * bound to a variable. Consider adding them to the Figma collection.
+ */
+
+:root,
+[data-theme='lys'] {
+  /* Figma variables */
+  --color-ink: #1c1b1a;
+  --color-ink-muted: #6f6b65;
+  --color-accent: #2b4ccb;
+  --color-border: #e2dfda;
+  --color-surface: #fdfcfa;
+
+  /* (frame) */
+  --color-ink-strong: #111111;   /* headings, fact values */
+  --color-body: #2a2927;         /* long-form body text */
+  --color-label: #7a7772;        /* small caps labels, card meta */
+  --color-card: #f2f0eb;         /* light card fill */
+  --color-card-border: #dedbd6;  /* outlined step cards */
+  --color-media: #e6e4e0;        /* image placeholder behind media */
+
+  /* Device frames (same in both themes) */
+  --device-titanium: #9a9da3;
+  --device-bezel: #0b0b0c;
+  --device-island: #050505;
+  --device-button: #80838a;
+  --browser-bar: #f3f2ef;
+  --browser-field: #ffffff;
+
+  color-scheme: light;
+}
+
+[data-theme='mørk'] {
+  --color-ink: #fafaf7;
+  --color-ink-muted: #a3a3a8;
+  --color-accent: #8ea2f2;
+  --color-border: #3a3b40;
+  --color-surface: #1a1b1f;
+
+  --color-ink-strong: #ffffff;
+  --color-body: #e4e4e6;
+  --color-label: #a3a3a8;
+  --color-card: #24252a;
+  --color-card-border: #3a3b40;
+  --color-media: #24252a;
+
+  color-scheme: dark;
+}
+
+:root {
+  /* Typography */
+  --font-sans: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --weight-regular: 400;
+  --weight-medium: 500;
+
+  /* Type scale (desktop px from Figma) */
+  --text-label: 0.8125rem;   /* 13 – caps labels, card meta */
+  --text-small: 0.875rem;    /* 14 – footer, card numbers */
+  --text-caption: 0.9375rem; /* 15 – captions, section numbers */
+  --text-nav: 1rem;          /* 16 – nav, card description */
+  --text-fact: 1.125rem;     /* 18 – fact values, small body */
+  --text-card-lead: 1.25rem; /* 20 – light card text */
+  --text-body: 1.375rem;     /* 22 – case body */
+  --text-h3: 1.75rem;        /* 28 */
+  --text-card-title: 2.25rem;/* 36 – project card title */
+  --text-stat: 2.75rem;      /* 44 – findings */
+  --text-h2: 3.5rem;         /* 56 – case section heading */
+
+  --tracking-label: 0.04em;  /* 0.52px @13, 0.56px @14 */
+  --tracking-nav: 0.01em;    /* 0.16px @16 */
+  --tracking-tight: -0.02em; /* h2 */
+
+  /* Spacing (8 / 16 / 32 / 64 base, 4 / 12 / 24 / 48 in between) */
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-s: 12px;
+  --space-m: 16px;
+  --space-l: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-section: 120px;
+
+  /* Layout */
+  --page-margin: 32px;
+  --case-inset: 288px;        /* text column inset on case pages */
+  --case-content: 1088px;     /* case body column */
+  --text-measure: 760px;      /* lead paragraph width */
+  --page-max: 1440px;
+
+  /* Radius */
+  --radius-none: 0;
+  --radius-xs: 2px;            /* images, cards */
+  --radius-phone: 48px;        /* screen inside iPhone frame @ 375 wide */
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration: 200ms;
+  --duration-slow: 600ms;
+  --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+@media (max-width: 767px) {
+  :root {
+    --page-margin: 20px;
+    --case-inset: 0px;
+    --text-body: 1.125rem;
+    --text-h2: 2.25rem;
+    --text-h3: 1.375rem;
+    --text-card-title: 1.75rem;
+    --text-stat: 2rem;
+    --space-section: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration: 0ms;
+    --duration-slow: 0ms;
+  }
+}

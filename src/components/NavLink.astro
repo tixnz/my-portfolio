@@ -1,0 +1,29 @@
+---
+/**
+ * Nav/lenke (Figma 394:8524). Ink by default, accent on hover, no underline.
+ */
+interface Props {
+  href: string;
+  label: string;
+  current?: boolean;
+}
+const { href, label, current = false } = Astro.props;
+---
+
+<a class="nav-link" href={href} aria-current={current ? 'page' : undefined}>{label}</a>
+
+<style>
+  .nav-link {
+    font-size: var(--text-nav);
+    letter-spacing: var(--tracking-nav);
+    text-transform: uppercase;
+    line-height: normal;
+    white-space: nowrap;
+    color: var(--color-ink);
+    transition: color var(--duration) var(--ease-out);
+  }
+  .nav-link:hover,
+  .nav-link[aria-current='page'] {
+    color: var(--color-accent);
+  }
+</style>

@@ -1,0 +1,149 @@
+---
+/**
+ * iPhone-ramme (Figma 269:1719), built in code so it stays sharp at any size.
+ * Frame 399 × 836. The screen is 375 × 812 with radius 48, placed 12 px in,
+ * under the frame. All measurements scale with the frame width (cqw).
+ *
+ * scrollable: the screenshot scrolls vertically inside the screen
+ * (TV-aksjonen result). Pass a full-page screenshot.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  image?: ImageMetadata;
+  alt?: string;
+  /** Rendered frame width in px on desktop */
+  width?: number;
+  scrollable?: boolean;
+  /** Accessible name for the scroll area when scrollable */
+  scrollLabel?: string;
+}
+
+const { image, alt = '', width = 290, scrollable = false, scrollLabel } = Astro.props;
+const screenWidth = Math.round((width * 375) / 399);
+---
+
+<div class="phone" style={`--phone-w: ${width}px`}>
+  <div
+    class:list={['screen', { 'screen--scroll': scrollable }]}
+    tabindex={scrollable ? 0 : undefined}
+    role={scrollable ? 'region' : undefined}
+    aria-label={scrollable ? (scrollLabel ?? alt) : undefined}
+  >
+    {
+      image && (
+        <Image
+          src={image}
+          alt={alt}
+          widths={[screenWidth, screenWidth * 2]}
+          sizes={`${screenWidth}px`}
+          class="shot"
+        />
+      )
+    }
+  </div>
+  <div class="frame" aria-hidden="true">
+    <span class="titanium"></span>
+    <span class="bezel"></span>
+    <span class="island"></span>
+    <span class="btn btn--action"></span>
+    <span class="btn btn--vol-up"></span>
+    <span class="btn btn--vol-down"></span>
+    <span class="btn btn--side"></span>
+  </div>
+</div>
+
+<style>
+  .phone {
+    container-type: inline-size;
+    position: relative;
+    width: min(var(--phone-w), 100%);
+    aspect-ratio: 399 / 836;
+    flex-shrink: 0;
+  }
+  /* 1 Figma px = 100cqw / 399 */
+  .screen {
+    position: absolute;
+    left: calc(12 * 100cqw / 399);
+    top: calc(12 * 100cqw / 399);
+    width: calc(375 * 100cqw / 399);
+    height: calc(812 * 100cqw / 399);
+    overflow: hidden;
+    border-radius: calc(48 * 100cqw / 399);
+    background: #fff;
+  }
+  .screen :global(.shot) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .screen--scroll {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+  .screen--scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .screen--scroll :global(.shot) {
+    height: auto;
+  }
+  .screen--scroll:focus-visible {
+    outline-offset: 2px;
+  }
+
+  .frame {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .titanium {
+    position: absolute;
+    inset: 0;
+    border: calc(3 * 100cqw / 399) solid var(--device-titanium);
+    border-radius: calc(60 * 100cqw / 399);
+  }
+  .bezel {
+    position: absolute;
+    inset: calc(3 * 100cqw / 399);
+    border: calc(9 * 100cqw / 399) solid var(--device-bezel);
+    border-radius: calc(57 * 100cqw / 399);
+  }
+  .island {
+    position: absolute;
+    left: calc(139.5 * 100cqw / 399);
+    top: calc(23 * 100cqw / 399);
+    width: calc(120 * 100cqw / 399);
+    height: calc(35 * 100cqw / 399);
+    border-radius: calc(17.5 * 100cqw / 399);
+    background: var(--device-island);
+  }
+  .btn {
+    position: absolute;
+    width: calc(3 * 100cqw / 399);
+    border-radius: calc(1.5 * 100cqw / 399);
+    background: var(--device-button);
+  }
+  .btn--action {
+    left: calc(-3 * 100cqw / 399);
+    top: calc(150 * 100cqw / 399);
+    height: calc(32 * 100cqw / 399);
+  }
+  .btn--vol-up {
+    left: calc(-3 * 100cqw / 399);
+    top: calc(212 * 100cqw / 399);
+    height: calc(62 * 100cqw / 399);
+  }
+  .btn--vol-down {
+    left: calc(-3 * 100cqw / 399);
+    top: calc(288 * 100cqw / 399);
+    height: calc(62 * 100cqw / 399);
+  }
+  .btn--side {
+    left: 100%;
+    top: calc(250 * 100cqw / 399);
+    height: calc(96 * 100cqw / 399);
+  }
+</style>

@@ -1,0 +1,62 @@
+---
+/**
+ * Nav/kontakt (Figma 396:8552). Label, arrow and a 1 px line, 230 px wide.
+ * Hover: text, arrow and line turn accent, arrow slides 6 px right. 200 ms ease-out.
+ */
+interface Props {
+  href: string;
+  label: string;
+  current?: boolean;
+}
+const { href, label, current = false } = Astro.props;
+---
+
+<a class="kontakt" href={href} aria-current={current ? 'page' : undefined}>
+  <span class="row">
+    <span class="text">{label}</span>
+    <span class="arrow" aria-hidden="true">→</span>
+  </span>
+  <span class="line" aria-hidden="true"></span>
+</a>
+
+<style>
+  .kontakt {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 230px;
+    flex-shrink: 0;
+    color: var(--color-ink);
+    transition: color var(--duration) var(--ease-out);
+  }
+  .row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-right: 6px;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  .text {
+    font-size: var(--text-nav);
+    letter-spacing: var(--tracking-nav);
+    text-transform: uppercase;
+  }
+  .arrow {
+    font-size: 18px;
+    transition: transform var(--duration) var(--ease-out);
+  }
+  .line {
+    display: block;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+  }
+  .kontakt:hover,
+  .kontakt[aria-current='page'] {
+    color: var(--color-accent);
+  }
+  .kontakt:hover .arrow {
+    transform: translateX(6px);
+  }
+</style>

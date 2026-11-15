@@ -1,0 +1,43 @@
+---
+/**
+ * Case section heading (Figma 251:1388, 251:1347).
+ * Accent number line ("02 Innsikt") over a 56 px heading.
+ */
+interface Props {
+  /** e.g. "02" */
+  number: string;
+  /** Short name after the number, also used in the table of contents */
+  label?: string;
+  /** Anchor id for the table of contents */
+  id?: string;
+  as?: 'h2' | 'h3';
+}
+const { number, label, id, as: Heading = 'h2' } = Astro.props;
+---
+
+<div class="section-heading">
+  <p class="number">{label ? `${number} ${label}` : number}</p>
+  <Heading class="heading" id={id}><slot /></Heading>
+</div>
+
+<style>
+  .section-heading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+  }
+  .number {
+    font-size: var(--text-caption);
+    letter-spacing: var(--tracking-label);
+    line-height: normal;
+    color: var(--color-accent);
+  }
+  .heading {
+    font-size: var(--text-h2);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-ink-strong);
+    text-wrap: balance;
+    scroll-margin-top: 140px;
+  }
+</style>
