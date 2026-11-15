@@ -16,7 +16,6 @@ facts:
   - { label: Varighet, value: 3 dager }
   - { label: Team, value: 3 designstudenter }
   - { label: Arrangør, value: 'Bekk, i samarbeid med MUNCH' }
-  - { label: Type, value: 'Konkurranse, finale' }
 next: del-for-tv-aksjonen
 ---
 
@@ -30,7 +29,13 @@ import ScreenStrip from '../../components/case/ScreenStrip.astro';
   statement="Hvordan kan vi få unge til å gjenbesøke MUNCH?"
 />
 
-<TextWithImage label="Innsikt" src="ung-munch/innsikt-munch.jpg" alt="To av deltakerne poserer i et vindu høyt oppe i MUNCH-bygget">
+<TextWithImage
+  label="Innsikt"
+  images={[
+    { src: 'ung-munch/finale-presentasjon.jpg', alt: 'Teamet presenterer UNG + MUNCH for publikum i finalen på UX Cup' },
+    { src: 'ung-munch/innsikt-lapper.jpg', alt: 'Post-it-lapper fra innsiktsarbeidet sortert på store ark på en vegg' },
+  ]}
+>
   I løpet av et intensivt tredagersprosjekt jobbet vi med en kort innsiktsfase og interne idémyldringsworkshops. For å få raske og relevante innspill gjennomførte vi «5 på gata»-intervjuer og et digitalt spørreskjema. Vi oppdaget at mange unge voksne hadde besøkt museet kun **én gang**, ofte i forbindelse med skole, og at **interaktive utstillinger** var det som hadde **engasjert mest.**
 </TextWithImage>
 

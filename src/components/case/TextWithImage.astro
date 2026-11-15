@@ -1,34 +1,51 @@
 ---
 /**
- * Labelled text beside a portrait image (Figma UNG + MUNCH "Innsikt", 192:1274).
- * Text fills the row, image 331.5 × 442 on the right, 96 px apart.
+ * Labelled text beside an image column (Figma UNG + MUNCH "Innsikt", 192:1274).
+ * Text fills the row; the images sit in a 332 px column on the right, 96 px apart.
+ * Pass one image with src/alt (cropped to imageWidth × imageHeight), or several
+ * with images – those sit side by side under the text, sharing one height and
+ * keeping their own proportions.
  */
 import { Image } from 'astro:assets';
 import { resolveImage, type ImageRef } from '../../lib/images';
 
 interface Props {
   label: string;
-  src: ImageRef;
-  alt: string;
+  src?: ImageRef;
+  alt?: string;
+  images?: { src: ImageRef; alt: string }[];
   imageWidth?: number;
   imageHeight?: number;
 }
-const { label, src, alt, imageWidth = 332, imageHeight = 442 } = Astro.props;
+const { label, src, alt = '', images, imageWidth = 332, imageHeight = 442 } = Astro.props;
+const list = images ?? (src ? [{ src, alt }] : []);
+const single = !images;
+/* Side-by-side images grow in proportion to their aspect ratio, so they share one height */
+const grow = (img: ImageRef) => {
+  const r = resolveImage(img);
+  return `flex-grow: ${(r.width / r.height).toFixed(4)}`;
+};
 ---
 
-<section class="text-image prose">
+<section class:list={['text-image', 'prose', { 'text-image--row': !single }]}>
   <div class="text">
     <h2 class="block-label">{label}</h2>
     <slot />
   </div>
-  <Image
-    src={resolveImage(src)}
-    alt={alt}
-    widths={[imageWidth, imageWidth * 2]}
-    sizes={`(max-width: 767px) 100vw, ${imageWidth}px`}
-    class="img"
-    style={`--w: ${imageWidth}px; --ratio: ${imageWidth} / ${imageHeight}`}
-  />
+  <div class="images" style={`--w: ${imageWidth}px`}>
+    {
+      list.map((img) => (
+        <Image
+          src={resolveImage(img.src)}
+          alt={img.alt}
+          widths={single ? [imageWidth, imageWidth * 2] : [390, 640, 1280]}
+          sizes={single ? `(max-width: 767px) 100vw, ${imageWidth}px` : '(max-width: 767px) 100vw, 640px'}
+          class:list={['img', { 'img--crop': single }]}
+          style={single ? `--ratio: ${imageWidth} / ${imageHeight}` : grow(img.src)}
+        />
+      ))
+    }
+  </div>
 </section>
 
 <style>
@@ -49,19 +66,53 @@ const { label, src, alt, imageWidth = 332, imageHeight = 442 } = Astro.props;
     line-height: 1.5;
     color: var(--color-ink-strong);
   }
-  .img {
+  .images {
+    display: flex;
     flex: 0 0 var(--w);
+    flex-direction: column;
+    gap: var(--space-m);
     width: var(--w);
+  }
+  .img {
+    width: 100%;
     height: auto;
+    border-radius: var(--radius-xs);
+  }
+  .img--crop {
     aspect-ratio: var(--ratio);
     object-fit: cover;
+  }
+  /* Several images: text on top, images in a row underneath */
+  .text-image--row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2xl);
+  }
+  .text-image--row .images {
+    flex: none;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 920px;
+  }
+  .text-image--row .img {
+    flex-basis: 0;
+    min-width: 0;
+  }
+  @media (max-width: 767px) {
+    .text-image--row .images {
+      flex-direction: column;
+    }
+    .text-image--row .img {
+      flex-basis: auto;
+    }
   }
   @media (max-width: 767px) {
     .text-image {
       flex-direction: column;
       gap: var(--space-xl);
     }
-    .img {
+    .images {
       flex-basis: auto;
       width: 100%;
     }
