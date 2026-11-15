@@ -24,6 +24,11 @@ html {
   }
 }
 
+/* Lock page scroll while the full-screen mobile menu is open */
+html.menu-open {
+  overflow: hidden;
+}
+
 body {
   min-height: 100vh;
   background: var(--color-surface);

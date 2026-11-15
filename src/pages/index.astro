@@ -51,6 +51,7 @@ const rowOffsets = [40, 64];
           {home.projectsLink.label.map((line) => <span>{line}</span>)}
         </span>
         <span class="projects-arrow" aria-hidden="true">↘</span>
+        <span class="projects-arrow-mobile" aria-hidden="true">↓</span>
       </a>
     </div>
   </section>
@@ -196,13 +197,34 @@ const rowOffsets = [40, 64];
     flex: 0 1 620px;
   }
 
+  .projects-arrow-mobile {
+    display: none;
+  }
+
+  /*
+   * Mobile (Figma "Forside – mobil (skisse)", 398:11737): the cover is not a
+   * full screen. Name stacked on three lines at 64 px, subline 17 px, then a
+   * small "MINE PROSJEKTER ↓" link. Cards in one column, 48 px apart.
+   */
   @media (max-width: 767px) {
     .cover {
-      min-height: max(560px, calc(100svh - 93px));
+      min-height: 0;
+      gap: 20px;
+      padding: 72px var(--page-margin) 56px;
+      border-bottom: 0;
+    }
+    .spacer {
+      display: none;
     }
     .name-block {
       align-items: stretch;
-      padding-inline: var(--page-margin);
+      gap: 20px;
+      padding-inline: 0;
+    }
+    .name {
+      flex-direction: column;
+      align-items: flex-start;
+      font-size: clamp(3rem, 16.4vw, 4rem); /* 64 px at 390 */
     }
     /* One column on phones: the subline uses the full width */
     .ghost {
@@ -210,17 +232,32 @@ const rowOffsets = [40, 64];
     }
     .subline {
       width: auto;
-      margin-top: var(--space-m);
-      font-size: var(--text-fact);
+      font-size: 17px;
     }
     .bottom {
-      padding-inline: var(--page-margin);
+      padding: 44px 0 0;
     }
     .projects-link {
-      font-size: 20px;
+      gap: 0.4em;
+      align-items: baseline;
+      font-size: var(--text-small);
+      letter-spacing: var(--tracking-label);
+      color: var(--color-accent);
+    }
+    .projects-label {
+      flex-direction: row;
+      gap: 0.3em;
+      line-height: normal;
+    }
+    .projects-arrow {
+      display: none;
+    }
+    .projects-arrow-mobile {
+      display: inline;
     }
     .projects {
-      padding-block: var(--space-3xl) var(--space-section);
+      gap: var(--space-2xl);
+      padding-block: 0 56px;
     }
     .row {
       flex-direction: column;

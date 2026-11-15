@@ -3,16 +3,21 @@
  * Header (Figma 251:1304). Logo, three nav links and the Kontakt link.
  * Behaviour (Figma annotation): hides when scrolling down, slides back in as
  * soon as the user scrolls up, always visible at the top. About 200 ms.
- * The full-screen mobile menu follows in phase 7.
+ *
+ * Mobile (Figma "Header (mobil)" 398:11738, "Meny åpen" 398:11778): 24 px logo
+ * and a 44 × 44 menu button that opens a full-screen menu (a modal <dialog>,
+ * so focus stays inside and Esc closes it). Icons use the Figma paths with
+ * currentColor so they follow the theme.
  */
 import Logo from './Logo.astro';
 import NavLink from './NavLink.astro';
 import NavKontakt from './NavKontakt.astro';
-import { nav, contactLink } from '../content/site';
+import { nav, contactLink, site } from '../content/site';
 import { t } from '../i18n/ui.no';
 
 const path = Astro.url.pathname;
 const isCurrent = (href: string) => !href.startsWith('/#') && path.startsWith(href);
+const tel = site.phone.replace(/\s+/g, '');
 ---
 
 <header class="site-header" data-header>
@@ -39,7 +44,66 @@ const isCurrent = (href: string) => !href.startsWith('/#') && path.startsWith(hr
         current={isCurrent(contactLink.href)}
       />
     </nav>
+
+    <button
+      type="button"
+      class="icon-button menu-open"
+      aria-label={t('nav.menuOpen')}
+      aria-haspopup="dialog"
+      aria-controls="mobilmeny"
+      data-menu-open
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M3 8H21M3 16H21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+      </svg>
+    </button>
   </div>
+
+  <dialog id="mobilmeny" class="menu" aria-label={t('nav.label')} data-menu>
+    <div class="menu-top">
+      <Logo />
+      <button type="button" class="icon-button" aria-label={t('nav.menuClose')} data-menu-close>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 5L19 19M19 5L5 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="menu-nav" aria-label={t('nav.label')}>
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                class="menu-link"
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                {...('file' in item && item.file ? { target: '_blank', rel: 'noopener', type: 'application/pdf' } : {})}
+              >
+                {item.label}
+                {'file' in item && item.file && <span class="visually-hidden"> {t('nav.pdf')}</span>}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a
+            class="menu-link"
+            href={contactLink.href}
+            aria-current={isCurrent(contactLink.href) ? 'page' : undefined}
+          >
+            {contactLink.label}
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="menu-contact">
+      <p class="menu-contact-label">{t('nav.contact')}</p>
+      <a href={`mailto:${site.email}`}>{t('contact.email')}</a>
+      <a href={`tel:${tel}`}>{t('contact.phone')}</a>
+    </div>
+  </dialog>
 </header>
 
 <style>
@@ -74,29 +138,109 @@ const isCurrent = (href: string) => !href.startsWith('/#') && path.startsWith(hr
     padding: 0;
   }
 
-  /* Interim layout until the mobile menu (phase 7) */
+  /* 44 × 44 touch target around a 24 px icon */
+  .icon-button {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    /* Keep the 44 px target without making the 64 px bar taller */
+    margin: -4px -10px -4px 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+  .menu-open {
+    display: none;
+    margin-left: auto;
+  }
+
   @media (max-width: 1023px) {
     .nav {
       padding-left: var(--space-3xl);
     }
   }
+
   @media (max-width: 767px) {
     .inner {
-      padding-block: var(--space-m);
+      padding: 14px var(--page-margin);
     }
     .nav {
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: var(--space-s) var(--space-l);
-      padding-left: var(--space-l);
+      display: none;
     }
-    .nav :global(.kontakt) {
-      width: auto;
-      gap: 2px;
+    .menu-open {
+      display: grid;
     }
-    .nav :global(.kontakt .row) {
-      gap: var(--space-xs);
-    }
+  }
+
+  /* Full-screen menu */
+  .menu {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--color-surface);
+    color: var(--color-ink);
+  }
+  .menu[open] {
+    display: flex;
+    flex-direction: column;
+  }
+  .menu::backdrop {
+    background: var(--color-surface);
+  }
+  .menu-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px var(--page-margin);
+  }
+  .menu-nav {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 44px;
+    padding: 40px var(--page-margin) 0;
+  }
+  .menu-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0;
+    list-style: none;
+  }
+  .menu-link {
+    font-size: 40px;
+    font-weight: var(--weight-medium);
+    line-height: 1.45;
+    color: var(--color-ink);
+    transition: color var(--duration) var(--ease-out);
+  }
+  .menu-link:hover,
+  .menu-link[aria-current='page'] {
+    color: var(--color-accent);
+  }
+  .menu-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 var(--page-margin) 40px;
+  }
+  .menu-contact-label {
+    font-size: 12px;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-label);
+  }
+  .menu-contact a {
+    font-size: var(--text-nav);
+    line-height: 1.45;
+    color: var(--color-ink-strong);
   }
 </style>
 
@@ -119,5 +263,29 @@ const isCurrent = (href: string) => !href.startsWith('/#') && path.startsWith(hr
 
     // Keyboard users tabbing into the header should always see it.
     header.addEventListener('focusin', () => header.classList.remove('is-hidden'));
+  }
+
+  // Mobile menu
+  const menu = document.querySelector<HTMLDialogElement>('[data-menu]');
+  const openButton = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+  const closeButton = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+  if (menu && openButton && closeButton) {
+    openButton.addEventListener('click', () => {
+      menu.showModal();
+      document.documentElement.classList.add('menu-open');
+    });
+    closeButton.addEventListener('click', () => menu.close());
+    menu.addEventListener('close', () => {
+      document.documentElement.classList.remove('menu-open');
+      openButton.focus();
+    });
+    // Same-page links (e.g. "Prosjekter" on the front page) should close the menu.
+    menu.querySelectorAll('a[href^="/#"]').forEach((a) =>
+      a.addEventListener('click', () => menu.close()),
+    );
+    // Close if the window grows past the mobile breakpoint.
+    window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+      if (e.matches && menu.open) menu.close();
+    });
   }
 </script>

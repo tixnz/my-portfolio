@@ -33,6 +33,14 @@ const { href = '/' } = Astro.props;
   .logo:hover {
     color: var(--color-accent);
   }
+  /* Mobile header (Figma 398:11739): 24 px, 22.5 × 36 */
+  @media (max-width: 767px) {
+    .logo {
+      width: 22.5px;
+      height: 36px;
+      font-size: 24px;
+    }
+  }
   .z,
   .t {
     position: absolute;

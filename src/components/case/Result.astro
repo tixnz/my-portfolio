@@ -38,7 +38,15 @@ const { id, number, title, lead } = Astro.props;
   .result :global(.result-flow) {
     margin-top: 240px;
   }
+  /* Mobile (Figma "01 Løsningen", 398:11828): tighter gaps, 56 px below */
   @media (max-width: 767px) {
+    .result {
+      gap: var(--space-m);
+      padding-top: var(--space-l);
+    }
+    .text {
+      gap: 10px;
+    }
     .result :global(.result-flow) {
       margin-top: var(--space-xl);
     }

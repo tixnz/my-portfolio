@@ -46,7 +46,7 @@ const d = entry.data;
 
     {
       d.cover && (
-        <div class="page">
+        <div class="page hero-wrap">
           <div class="hero-frame" style={d.coverBackground ? `background: ${d.coverBackground}` : undefined}>
             <Image
               src={d.cover}
@@ -263,18 +263,43 @@ const d = entry.data;
     }
   }
 
+  /* Mobile (Figma "Case – SATS Quests – mobil (skisse)", 398:11794) */
   @media (max-width: 767px) {
     .title-block {
-      gap: var(--space-m);
-      padding-top: var(--space-2xl);
+      gap: 14px;
+      padding-top: var(--space-l);
       padding-bottom: var(--space-xl);
     }
+    .back {
+      margin-bottom: var(--space-xs);
+      font-size: 13px;
+      color: var(--color-accent);
+    }
+    .title {
+      font-size: 3rem; /* 48 */
+    }
+    .subtitle {
+      font-size: 1.125rem; /* 18 */
+    }
+    .logo-title {
+      padding: var(--space-l) 0 0;
+      font-size: 2.75rem;
+    }
+    /* Hero runs edge to edge, 300 high */
+    .hero-wrap {
+      padding-inline: 0;
+    }
+    .hero-frame {
+      aspect-ratio: auto;
+      height: 300px;
+      border-radius: 0;
+    }
     .intro {
-      gap: var(--space-xl);
-      align-items: stretch;
+      gap: var(--space-l);
+      padding-block: var(--space-xl) 40px;
     }
     .statement {
-      text-align: left;
+      font-size: 1.5rem; /* 24 */
     }
   }
 </style>

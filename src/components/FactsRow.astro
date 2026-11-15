@@ -46,11 +46,18 @@ const { facts } = Astro.props;
     color: var(--color-ink-strong);
   }
 
+  /* Mobile (Figma "Fakta (2 kolonner)", 398:11806) */
   @media (max-width: 767px) {
     .facts {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--space-l) var(--space-m);
-      padding-top: var(--space-xl);
+      gap: 20px;
+      padding-block: 28px;
+    }
+    .fact {
+      gap: 4px;
+    }
+    dd {
+      line-height: 1.45;
     }
   }
 </style>

@@ -38,12 +38,15 @@ const {
   captionGap = 40,
   spaceAfter = 0,
 } = Astro.props;
+
+// Mobile (Figma 398:11833): portrait screens 200 wide, landscape ones 300.
+const mobileWidth = itemHeight > itemWidth ? 200 : 300;
 ---
 
 <div class="strip-block" data-strip style={`--caption-gap: ${captionGap}px; padding-bottom: ${spaceAfter}px`}>
   <ul
     class="strip"
-    style={`--item-w: ${itemWidth}px; --item-ratio: ${itemWidth} / ${itemHeight}; --gap: ${gap}px`}
+    style={`--item-w: ${itemWidth}px; --item-w-mobile: ${mobileWidth}px; --item-ratio: ${itemWidth} / ${itemHeight}; --gap: ${gap}px`}
     tabindex="0"
     aria-label={label}
     data-strip-track
@@ -54,8 +57,8 @@ const {
           <Image
             src={resolveImage(item.src)}
             alt={item.alt}
-            widths={[itemWidth, itemWidth * 2]}
-            sizes={`${itemWidth}px`}
+            widths={[mobileWidth, itemWidth, itemWidth * 2]}
+            sizes={`(max-width: 767px) ${mobileWidth}px, ${itemWidth}px`}
             class="img"
           />
         </li>
@@ -66,6 +69,7 @@ const {
   <div class:list={['caption-row', { 'case-column': inset }]}>
     {caption && <p class="caption">{caption}</p>}
     {hint && <p class="hint" aria-hidden="true">{hint}</p>}
+    {hint && <p class="hint-touch" aria-hidden="true">{t('strip.hintTouch')}</p>}
     <div class="arrows">
       <button type="button" class="arrow" data-strip-prev aria-label={t('strip.prev')}>←</button>
       <button type="button" class="arrow" data-strip-next aria-label={t('strip.next')}>→</button>
@@ -158,18 +162,42 @@ const {
     }
   }
 
-  /* Touch: swipe only */
+  .hint-touch {
+    display: none;
+  }
+
+  /*
+   * Mobile (Figma 398:11833): swipe only. The strip runs edge to edge with
+   * 20 px padding, screens 12 px apart, and "Sveip sideveis…" underneath.
+   */
   @media (max-width: 767px) {
+    .strip {
+      gap: 12px;
+      margin-inline: calc(-1 * var(--page-margin));
+      padding-inline: var(--page-margin);
+      scroll-padding-inline: var(--page-margin);
+    }
     .item {
-      flex-basis: min(var(--item-w), 70vw);
+      flex-basis: var(--item-w-mobile);
     }
     .caption-row {
       margin-top: var(--space-m);
-      flex-wrap: wrap;
-      gap: var(--space-xs) var(--space-m);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    .caption,
+    .hint-touch {
+      font-size: var(--text-caption);
+      line-height: normal;
+      white-space: normal;
+      color: var(--color-label);
     }
     .hint {
-      white-space: normal;
+      display: none;
+    }
+    .hint-touch {
+      display: block;
     }
     .arrows {
       display: none;

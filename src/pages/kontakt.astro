@@ -39,6 +39,12 @@ const tel = site.phone.replace(/\s+/g, '');
     letter-spacing: -0.02em;
     text-transform: uppercase;
     color: var(--color-ink-strong);
+    /*
+     * Optical alignment: Instrument Sans has built-in side spacing (the "T"
+     * starts 0.032 em in, the e-mail's "z" 0.054 em). Pulling each line back
+     * by its own amount puts the ink of all three exactly on the page margin.
+     */
+    margin-left: -0.032em;
   }
   .links {
     display: flex;
@@ -52,6 +58,7 @@ const tel = site.phone.replace(/\s+/g, '');
     line-height: 1.5;
     color: var(--color-ink-strong);
     transition: color var(--duration) var(--ease-out);
+    margin-left: -0.054em;
   }
   .link--email {
     text-decoration: underline;

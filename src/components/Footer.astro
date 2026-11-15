@@ -30,4 +30,13 @@ const year = new Date().getFullYear();
     line-height: normal;
     color: var(--color-ink-muted);
   }
+  /* Mobile (Figma 398:11776): 12 px, 24 / 32 px padding */
+  @media (max-width: 767px) {
+    .inner {
+      padding: 24px var(--page-margin) 32px;
+    }
+    p {
+      font-size: 12px;
+    }
+  }
 </style>

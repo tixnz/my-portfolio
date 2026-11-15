@@ -159,6 +159,39 @@ const widths = size === 'wide' ? [460, 690, 1380] : [420, 620, 1240];
     transform: none;
   }
 
+  /* Mobile (Figma 398:11752): same 350 × 263 image for both shapes, 26 px title */
+  @media (max-width: 767px) {
+    .card {
+      gap: var(--space-s);
+    }
+    .card--wide,
+    .card--tall {
+      max-width: none;
+    }
+    .card--wide .media,
+    .card--tall .media {
+      aspect-ratio: 350 / 263;
+      border-radius: var(--radius-xs);
+    }
+    .info {
+      gap: 10px;
+    }
+    .title,
+    .card--tall .title {
+      font-size: var(--text-card-title);
+      line-height: 1.45;
+      letter-spacing: 0;
+      color: var(--color-ink);
+    }
+    .cta {
+      display: none;
+    }
+    .summary {
+      line-height: 1.45;
+      color: var(--color-ink-strong);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .card:hover .media :global(.img),
     .card:focus-visible .media :global(.img) {
