@@ -1,0 +1,31 @@
+---
+/**
+ * Highlighted question or quote (Figma "Sitat fra testing", 524:12243).
+ * 32 px medium text with a 3 px accent rule on the left.
+ */
+---
+
+<blockquote class="quote">
+  <p><slot /></p>
+</blockquote>
+
+<style>
+  .quote {
+    margin: 0;
+    padding: var(--space-xs) 0 var(--space-xs) var(--space-xl);
+    border-left: 3px solid var(--color-accent);
+  }
+  .quote p {
+    max-width: 1053px;
+    font-size: clamp(1.375rem, 2.22vw, 2rem); /* 32 px at 1440 */
+    font-weight: var(--weight-medium);
+    line-height: 1.45;
+    color: var(--color-ink);
+    text-wrap: pretty;
+  }
+  @media (max-width: 767px) {
+    .quote {
+      padding-left: var(--space-l);
+    }
+  }
+</style>

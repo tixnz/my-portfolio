@@ -1,8 +1,8 @@
 ---
 title: SATS Quests
 subtitle: Et onboarding-program som hjelper nye medlemmer å bli kjent med SATS og skape gode treningsvaner
-cover: ../../assets/cards/sats-quests.png
-coverAlt: To mobilskjermer fra SATS-appen med SATS Quests-modulen og reisekartet for nye medlemmer
+cover: ../../assets/cases/sats-quests/hero.jpg
+coverAlt: 'To mobiler på mørk bakgrunn: hjemskjermen i SATS-appen med SATS Quests-kortet, og reisekartet for uke 1'
 cardImage: ../../assets/cards/sats-quests.png
 cardImageAlt: To mobilskjermer fra SATS-appen med SATS Quests-modulen og reisekartet for nye medlemmer
 meta: 2025 · App · Internship
@@ -13,22 +13,21 @@ facts:
   - { label: Rolle, value: UX-designer }
   - { label: Varighet, value: Juni – August 2025 }
   - { label: Team, value: '1 UX-designer, 4 utviklere og 1 produktleder' }
-  - { label: Verktøy, value: Figma }
   - { label: Ansvarsområder, value: 'Workshops, brukertesting, wireframing og prototyping' }
 statement: Mange nye medlemmer bruker i liten grad tilbudene til SATS, og viktig informasjon er spredt på flere kanaler.
 intro: I løpet av et seks ukers internship som UX-designer hos SATS hadde jeg ansvar for innsiktsarbeid og design av en MVP for å forbedre onboardingen av nye medlemmer. Løsningen, SATS Quests, er et fireukers program i appen der nye medlemmer blir kjent med SATS sine tjenester på app og på sentre.
 tocLogo: ../../assets/cases/sats-quests/sats-logo.png
 tocLogoAlt: SATS
 toc:
-  - { id: resultat, label: Resultat }
+  - { id: bakgrunn, label: Bakgrunn }
   - { id: innsikt, label: Innsikt }
   - { id: idemyldring, label: Idémyldring }
-  - { id: testing, label: Testing og iterasjoner }
+  - { id: testing, label: Iterasjoner og testing }
+  - { id: resultat, label: Resultat }
   - { id: refleksjon, label: Refleksjon }
 next: varsel
 ---
 
-import Result from '../../components/case/Result.astro';
 import ScreenStrip from '../../components/case/ScreenStrip.astro';
 import Section from '../../components/case/Section.astro';
 import Group from '../../components/case/Group.astro';
@@ -38,29 +37,19 @@ import LabeledColumns from '../../components/case/LabeledColumns.astro';
 import Concepts from '../../components/case/Concepts.astro';
 import Iterations from '../../components/case/Iterations.astro';
 import TextBlock from '../../components/case/TextBlock.astro';
+import Quote from '../../components/case/Quote.astro';
 
-<Result
-  id="resultat"
-  number="01"
-  title="Løsningen – SATS Quests"
-  lead="Resultatet ble en MVP som ble testet og forbedret sammen med nye medlemmer gjennom brukertester på SATS-sentrene. Programmet ligger både som egen side og som modul på hjemskjermen, så oppgaver og progresjon alltid er lett tilgjengelig."
->
-  <ScreenStrip
-    caption="SATS Quests i appen"
-    items={[
-      { src: 'sats-quests/strip-1-velkommen.png', alt: 'Velkomstskjerm: Velkommen til SATS Quests, en oppstartsutfordring for å bli kjent med tjenestene' },
-      { src: 'sats-quests/strip-2-hjem-start.png', alt: 'Hjemskjermen med kortet «Kari + SATS = sekk» og en Start-knapp' },
-      { src: 'sats-quests/strip-3-hjem-progresjon.png', alt: 'Hjemskjermen med progresjonskort: uke 1, 1 av 3 quests fullført' },
-      { src: 'sats-quests/strip-4-reisekart.png', alt: 'Reisekartet for uke 1 og 2 med fullførte og kommende quests' },
-      { src: 'sats-quests/strip-5-hjem-progresjon-2.png', alt: 'Reisekartet med neste quest valgt' },
-      { src: 'sats-quests/strip-6-velg-quest.png', alt: 'Velg quest: legg til en venn, dra på gruppetime eller prøv et treningsprogram' },
-    ]}
-  />
-</Result>
+<Section id="bakgrunn" number="01" label="Bakgrunn" title="Bakgrunn for prosjektet">
+  SATS ønsket å gi nye medlemmer en bedre start og ga oss i oppdrag å utforske hvordan onboardingen kunne bli mer helhetlig og motiverende. Utgangspunktet var spørsmålet
 
-<Section id="innsikt" number="02" label="Innsikt" title="Jeg måtte forstå hvem brukerne er fra et helhetlig perspektiv.">
+  <Quote>Hvordan kan vi gjøre det enkelt for nye medlemmer å ta i bruk SATS sine tilbud, slik at de bygger gode treningsvaner fra start?</Quote>
+
+  SATS hadde **lite data** om nye medlemmer, og det gjorde det vanskelig å forstå behovene deres fra start. Viktig informasjon var **spredt** på flere kanaler og ble lett oversett. Det var også krevende å **tilpasse** treningsopplegg til ulike ferdighetsnivåer, og mange nye medlemmer brukte i liten grad gruppetimer, personlig trener eller treningsprogrammer.
+</Section>
+
+<Section id="innsikt" number="02" label="Innsikt" title="Vi måtte forstå hvem brukerne er fra et helhetlig perspektiv.">
   <Group>
-    Jeg gjennomførte **intervjuer** med medlemmer og kundeservice for å kartlegge treningsvaner, utfordringer ved oppstart og vanlige spørsmål nye medlemmer stiller. Jeg utformet og analyserte et **spørreskjema**, og vi kombinerte dette med en **dokumentanalyse** om bruksdata fra CRM-avdelingen. For å målrette innsatsen utviklet vi en **persona** basert på dataene, som representerer unge medlemmer i alderen 20–25 år.
+    Jeg gjennomførte **intervjuer** med medlemmer og kundeservice for å kartlegge treningsvaner, utfordringer ved oppstart og vanlige spørsmål nye medlemmer stiller. Jeg utformet og analyserte et **spørreskjema**, og vi kombinerte dette med en **dokumentanalyse** om bruksdata fra CRM-avdelingen. Vi utviklet en **persona**, som hjalp oss å forestille hvem brukeren er, og hvordan vi kunne løse denne problemstillingen.
 
     <Figure
       layout="feature"
@@ -87,13 +76,13 @@ import TextBlock from '../../components/case/TextBlock.astro';
   </Group>
 </Section>
 
-<Section id="idemyldring" number="03" label="Idémyldring" title="Hvor starter vi?">
+<Section id="idemyldring" number="03" label="Idémyldring" title="Hvordan går vi frem med det vi har lært til nå?">
   <Group>
-    Jeg holdt workshops med teamet for å finne ideer og sette dem i kontekst. Vi valgte å fokusere på interaktive løsninger med **spillifisering**, der medlemmer kunne gjennomføre oppgaver og utfordringer for å gjøre treningsopplevelsen mer engasjerende og **motiverende**, samtidig som tjenesten hjalp dem å bli bedre kjent med SATS sine ulike tilbud og ivaretok SATS sine **verdier**.
+    Med innsikten vår, fasiliterte jeg 2 idéworkshops med teamet for å utforske mulighetsrommet for en Gen Z-målgruppe. Gjennom dot voting snevret vi 6 idéer inn til én retning, som vi deretter satte i kontekst med storyboards. Dette ga teamet et felles bilde av hvordan løsningen kunne passe inn i medlemmenes hverdag.
 
     <Figure
       layout="pair"
-      height={402}
+      height="auto"
       images={[
         { src: 'sats-quests/skisser.jpg', alt: 'Håndtegnede skisser fra Crazy 8-øvelsen' },
         { src: 'sats-quests/workshop-idemyldring.jpg', alt: 'Storyboard tegnet på en glassvegg' },
@@ -106,6 +95,8 @@ import TextBlock from '../../components/case/TextBlock.astro';
         { label: 'Storyboarding', text: 'Satte ideene i kontekst og viste hvilke steg som var viktige.' },
       ]}
     />
+
+    Retningen ble en interaktiv løsning med gamification, der medlemmer gjennomfører oppgaver og utfordringer. Målet var å gjøre treningsopplevelsen mer engasjerende og motiverende, samtidig som medlemmene ble bedre kjent med SATS’ ulike tilbud på en måte som ivaretok SATS sine verdier.
   </Group>
 </Section>
 
@@ -126,20 +117,20 @@ import TextBlock from '../../components/case/TextBlock.astro';
   <Group gap="loose">
     ### Tre iterasjoner av reisekartet
 
-    Vi gjorde mange brukertester og hadde designsparring med designerne på huset. Noen av tilbakemeldingen vi fikk fra medlemmer var at faste / forhåndsdefinerte oppgaver opplevdes som for bundne. Vi gjorde dermed endringer til fleksible oppgaver ved å trykke på knappen for neste “quest”. For å velge oppgaver stilte vi spørsmål til medlemmer om hvilke funksjonaliterer de bruker mest, og hva de kunne tenke seg ville vært nyttig for nye medlemmer.
+    I vår første brukertest, fikk vi tilbakemeldinger fra medlemmer at faste og forhåndsdefinerte oppgaver opplevdes som for bundne. Vi gjorde dermed nye iterasjoner og skisserte løsninger med fleksible oppgaver ved å trykke på knappen for neste “quest”. For å velge oppgaver stilte vi spørsmål til medlemmer om hvilke funksjonaliteter de bruker mest, og hva de kunne tenke seg ville vært nyttig for nye medlemmer.
 
     <Iterations
       variant="phone"
       items={[
         { label: 'Iterasjon 1', title: 'Faste oppgaver', src: 'sats-quests/reisekart-v1.png', alt: 'Reisekart med faste oppgaver for uke 1 og 2', text: 'Reisekart med forhåndsdefinerte oppgaver ga en tydelig og styrt progresjon.' },
-        { label: 'Iterasjon 2', title: 'Fleksible oppgaver', src: 'sats-quests/reisekart-v2.png', alt: 'Reisekart der neste oppgave velges fritt', text: 'Flere oppgavevalg, små belønninger og kartet som modul på hjemskjermen.' },
-        { label: 'Iterasjon 3', title: 'Forenklet flyt', src: 'sats-quests/reisekart-v3.png', alt: 'Forenklet reisekart med færre steg', text: 'Færre klikk og mer informasjon om hver oppgave før man velger.' },
+        { label: 'Iterasjon 2', title: 'Fleksible oppgaver', src: 'sats-quests/reisekart-v2.png', alt: 'Reisekart med statusoppdatering øverst og tre oppgaver for uke 1', text: 'Statusoppdatering på toppen av skjermen, med oversikt over 3 oppgaver per uke.' },
+        { label: 'Iterasjon 3', title: 'Forenklet flyt', src: 'sats-quests/reisekart-v3.png', alt: 'Forbedret reisekart med fullførte quests, neste quest og belønning', text: 'Forbedret reisekart med oversikt over oppgaver og belønninger.' },
       ]}
     />
 
-    ### Tre iterasjoner av kortet på hjemskjermen
+    ### Hjemskjermen var det første medlemmene møtte, og derfor en naturlig plass for reisekartet.
 
-    <p class="small">Kortet gir rask tilgang til reisekartet og viser fremdriften direkte på hjemskjermen. Skulle ha en relasjon til reisekartet, og var viktig å ha et konsistent utseende og at det skulle være intuitivt å navigere på hjemskjerm og.</p>
+    <p class="small">Kortet skulle gi rask tilgang til reisekartet og vise fremdriften, samtidig som det passet inn i resten av appen. I designsparring ga design lead tilbakemelding om at kortet måtte vekke nysgjerrighet og henge sammen med SATS sine øvrige funksjoner. Jeg redesignet kortet ved å gjenbruke ikonene og språket fra reisekartet og mønstre som allerede fantes i appen. Resultatet ble et kort som inviterer nye medlemmer inn i oppgavene sine og føles som en naturlig del av hjemskjermen.</p>
 
     <Iterations
       variant="card"
@@ -152,8 +143,31 @@ import TextBlock from '../../components/case/TextBlock.astro';
   </Group>
 </Section>
 
-<Section id="refleksjon" number="05" label="Refleksjoner" title="Jeg lærte å…">
-  <TextBlock title="Å designe med begrensninger">
+<Section id="resultat" number="05" label="Resultat" title="SATS QUESTS – Et onboarding program">
+  <Group>
+    Løsningen ble SATS Quests, et fireukers onboardingprogram i appen som hjelper nye medlemmer å bli kjent med appen, tilbudene på senteret og de sosiale aktivitetene. Hver uke får medlemmet nye oppgaver og belønninger, slik at det blir mer motiverende å komme i gang og lettere å se sin egen progresjon.
+
+    <ScreenStrip
+      label="SATS Quests i appen"
+      hint=""
+      inset={false}
+      captionGap={24}
+      items={[
+        { src: 'sats-quests/strip-1-velkommen.png', alt: 'Velkomstskjerm: Velkommen til SATS Quests, en oppstartsutfordring for å bli kjent med tjenestene' },
+        { src: 'sats-quests/strip-2-hjem-start.png', alt: 'Hjemskjermen med kortet «Kari + SATS = sekk» og en Start-knapp' },
+        { src: 'sats-quests/strip-3-hjem-progresjon.png', alt: 'Hjemskjermen med progresjonskort: uke 1, 1 av 3 quests fullført' },
+        { src: 'sats-quests/strip-4-reisekart.png', alt: 'Reisekartet for uke 1 og 2 med fullførte og kommende quests' },
+        { src: 'sats-quests/strip-5-hjem-progresjon-2.png', alt: 'Reisekartet med neste quest valgt' },
+        { src: 'sats-quests/strip-6-velg-quest.png', alt: 'Velg quest: legg til en venn, dra på gruppetime eller prøv et treningsprogram' },
+      ]}
+    />
+
+    Programmet finnes både som et kort på hjemskjermen og som en egen side med reisekartet. Kortet viser ukens fremdrift, og reisekartet gir oversikt over hele programmet. Slik samles viktig informasjon på ett sted i stedet for å være spredt på flere kanaler.
+  </Group>
+</Section>
+
+<Section id="refleksjon" number="06" label="Refleksjoner" title="Jeg lærte å…">
+  <TextBlock title="Å designe med rammer">
     Som eneste designer fikk jeg erfare verdien av å samarbeide tett med utviklere og produkteier for å få en helhetlig forståelse av prosjektet. Jeg lærte å kommunisere rundt tekniske muligheter, strategi, og tilpasse designet slik at det både møtte brukerbehov og kunne realiseres i praksis.
   </TextBlock>
 
