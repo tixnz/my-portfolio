@@ -14,8 +14,10 @@ import { resolveImage, type ImageRef } from '../../lib/images';
 interface Props {
   variant?: 'phone' | 'card' | 'browser';
   items: { label: string; title?: string; src: ImageRef; alt: string; text?: string }[];
+  /** Step title level: h4 under a ### heading (default), h3 when there is none */
+  headingLevel?: 'h3' | 'h4';
 }
-const { variant = 'phone', items } = Astro.props;
+const { variant = 'phone', items, headingLevel: Title = 'h4' } = Astro.props;
 ---
 
 <ol class:list={['iterations', `iterations--${variant}`]}>
@@ -29,7 +31,7 @@ const { variant = 'phone', items } = Astro.props;
         )}
         <li class="step">
           <p class="label">{item.label}</p>
-          {item.title && <h4 class="title">{item.title}</h4>}
+          {item.title && <Title class="title">{item.title}</Title>}
           <div class="media">
             {variant === 'phone' ? (
               <PhoneFrame image={resolveImage(item.src)} alt={item.alt} width={279} />

@@ -16,14 +16,38 @@ import { t } from '../i18n/ui.no';
       <h1 class="heading">{about.heading}</h1>
       <p class="body">
         {about.text}
-        <span class="aside">{about.aside} <span class="emphasis">{about.asideEmphasis}</span></span>
+        <span class="aside">
+          {about.aside}
+          <span class="marley" data-marley>
+            <button
+              type="button"
+              class="emphasis"
+              aria-expanded="false"
+              aria-controls="marley-bilde"
+              data-marley-trigger
+            >
+              {about.asideEmphasis}
+            </button>
+            <span class="popup" id="marley-bilde">
+              <Image
+                src={about.marley}
+                alt={about.marleyAlt}
+                widths={[260, 520]}
+                width={260}
+                sizes="260px"
+                class="popup-img"
+              />
+            </span>
+          </span>
+        </span>
       </p>
     </div>
     <Image
       src={about.portrait}
       alt={about.portraitAlt}
-      widths={[460, 683]}
-      sizes="(max-width: 767px) 100vw, 460px"
+      widths={[460, 920]}
+      width={460}
+      sizes="(max-width: 767px) calc(100vw - 40px), 460px"
       class="portrait"
       loading="eager"
     />
@@ -61,10 +85,74 @@ import { t } from '../i18n/ui.no';
   .aside {
     color: color-mix(in srgb, var(--color-ink-strong) 60%, transparent);
   }
+  /*
+   * "Marley!" shows a small photo of the dog on hover, keyboard focus or tap.
+   * The trigger is a real button so it works without a mouse.
+   */
+  .marley {
+    position: relative;
+    display: inline-block;
+  }
   .emphasis {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
     text-decoration: underline;
     text-decoration-thickness: from-font;
     text-underline-offset: 0.15em;
+    cursor: pointer;
+    transition: color var(--duration) var(--ease-out);
+  }
+  .emphasis:hover,
+  .emphasis[aria-expanded='true'] {
+    color: var(--color-accent);
+  }
+  /* Positioned from the word's left edge; the script nudges it to stay on screen */
+  .popup {
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: var(--popup-x, 0px);
+    z-index: 10;
+    width: 260px;
+    padding: 6px;
+    border-radius: 10px;
+    background: var(--color-surface);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(8px) scale(0.96);
+    transform-origin: bottom left;
+    transition:
+      opacity var(--duration) var(--ease-out),
+      transform var(--duration) var(--ease-out),
+      visibility 0s linear var(--duration);
+  }
+  .popup :global(.popup-img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+  }
+  .marley:hover .popup,
+  .marley:focus-within .popup,
+  .marley.is-open .popup {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+  .marley.is-dismissed.is-dismissed .popup {
+    opacity: 0;
+    visibility: hidden;
+  }
+  @media (max-width: 767px) {
+    .popup {
+      width: min(240px, calc(100vw - 40px));
+    }
   }
   .portrait {
     flex: 0 0 460px;
@@ -91,3 +179,45 @@ import { t } from '../i18n/ui.no';
     }
   }
 </style>
+
+<script>
+  // Tap / click toggles the photo (touch screens have no hover); Esc closes it.
+  const wrap = document.querySelector<HTMLElement>('[data-marley]');
+  const trigger = document.querySelector<HTMLButtonElement>('[data-marley-trigger]');
+  if (wrap && trigger) {
+    const popup = wrap.querySelector<HTMLElement>('.popup')!;
+    // Keep the photo inside the window with a 16 px margin.
+    const place = () => {
+      const margin = 16;
+      const vw = document.documentElement.clientWidth;
+      const left = wrap.getBoundingClientRect().left;
+      const width = popup.offsetWidth;
+      let x = 0;
+      if (left + width > vw - margin) x = vw - margin - width - left;
+      if (left + x < margin) x = margin - left;
+      wrap.style.setProperty('--popup-x', `${Math.round(x)}px`);
+    };
+    place();
+    window.addEventListener('resize', place);
+    wrap.addEventListener('mouseenter', place);
+    trigger.addEventListener('focus', place);
+
+    const set = (open: boolean) => {
+      wrap.classList.toggle('is-open', open);
+      trigger.setAttribute('aria-expanded', String(open));
+    };
+    trigger.addEventListener('click', () => set(!wrap.classList.contains('is-open')));
+    trigger.addEventListener('blur', () => {
+      set(false);
+      wrap.classList.remove('is-dismissed');
+    });
+    wrap.addEventListener('mouseleave', () => wrap.classList.remove('is-dismissed'));
+    // Esc hides it even while the button keeps focus or the mouse stays over it.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        set(false);
+        wrap.classList.add('is-dismissed');
+      }
+    });
+  }
+</script>

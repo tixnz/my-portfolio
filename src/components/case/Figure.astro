@@ -37,8 +37,16 @@ const {
 } = Astro.props;
 const resolved = images.map((img) => ({ ...img, src: resolveImage(img.src) }));
 const maxW = width ?? 1088;
-const sizes =
-  layout === 'single' ? `(max-width: 1023px) 100vw, ${maxW}px` : '(max-width: 767px) 100vw, 700px';
+
+/*
+ * Generate each image at its desktop display width (1×, 2×) plus a phone size,
+ * never wider than the original. Phones show every image at full width (~390).
+ */
+const featureMain = maxW - 372 - gap;
+const displayWidth = layout === 'pair' ? Math.round((maxW - gap) / 2) : maxW;
+const widthsFor = (w: number, original: number) =>
+  [...new Set([390, 780, w, w * 2].map(Math.round))].filter((x) => x <= original).sort((a, b) => a - b);
+const sizesFor = (w: number) => `(max-width: 767px) calc(100vw - 40px), ${w}px`;
 const style = [`--h: ${height}px`, width ? `--w: ${width}px` : '', `--fit: ${fit}`, `--gap: ${gap}px`]
   .filter(Boolean)
   .join('; ');
@@ -49,16 +57,37 @@ const style = [`--h: ${height}px`, width ? `--w: ${width}px` : '', `--fit: ${fit
     {
       layout === 'feature' ? (
         <>
-          <Image src={resolved[0].src} alt={resolved[0].alt} widths={[700, 1400]} sizes={sizes} class="img main" />
+          <Image
+            src={resolved[0].src}
+            alt={resolved[0].alt}
+            widths={widthsFor(featureMain, resolved[0].src.width)}
+            width={Math.min(featureMain, resolved[0].src.width)}
+            sizes={sizesFor(featureMain)}
+            class="img main"
+          />
           <div class="col">
             {resolved.slice(1).map((img) => (
-              <Image src={img.src} alt={img.alt} widths={[372, 744]} sizes="(max-width: 767px) 100vw, 372px" class="img" />
+              <Image
+                src={img.src}
+                alt={img.alt}
+                widths={widthsFor(372, img.src.width)}
+                width={Math.min(372, img.src.width)}
+                sizes={sizesFor(372)}
+                class="img"
+              />
             ))}
           </div>
         </>
       ) : (
         resolved.map((img) => (
-          <Image src={img.src} alt={img.alt} widths={[maxW / 2, maxW, maxW * 2].map(Math.round)} sizes={sizes} class="img" />
+          <Image
+            src={img.src}
+            alt={img.alt}
+            widths={widthsFor(displayWidth, img.src.width)}
+            width={Math.min(displayWidth, img.src.width)}
+            sizes={sizesFor(displayWidth)}
+            class="img"
+          />
         ))
       )
     }

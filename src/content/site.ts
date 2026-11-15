@@ -4,6 +4,9 @@ import { t } from '../i18n/ui.no';
 export const site = {
   name: 'Zehra Tien Ayden',
   lang: 'no',
+  /** Default page description, also used when the page is shared */
+  description:
+    'Portefølje for Zehra Tien Ayden, UX-designer med master i interaksjonsdesign fra Universitetet i Oslo.',
   email: 'zehratieen@gmail.com',
   phone: '+47 482 74 967',
   /**

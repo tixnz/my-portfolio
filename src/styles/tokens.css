@@ -17,7 +17,11 @@
   /* (frame) */
   --color-ink-strong: #111111;   /* headings, fact values */
   --color-body: #2a2927;         /* long-form body text */
-  --color-label: #7a7772;        /* small caps labels, card meta */
+  /*
+   * small caps labels, card meta, captions. Figma uses #7a7772 (4.35:1 on the
+   * surface), below WCAG AA for small text; ink-muted passes (5.16:1).
+   */
+  --color-label: var(--color-ink-muted);
   --color-card: #f2f0eb;         /* light card fill */
   --color-card-border: #dedbd6;  /* outlined step cards */
   --color-media: #e6e4e0;        /* image placeholder behind media */

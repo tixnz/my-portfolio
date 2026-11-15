@@ -27,7 +27,14 @@ const { entry, next } = Astro.props;
 const d = entry.data;
 ---
 
-<BaseLayout title={d.title} description={d.subtitle ?? d.summary} theme={d.theme}>
+<BaseLayout
+  title={d.title}
+  description={d.subtitle ?? d.summary}
+  theme={d.theme}
+  image={d.cardImage}
+  imageAlt={d.cardImageAlt}
+  type="article"
+>
   <article class="case">
     <header class:list={['page', 'title-block', { 'title-block--logo': d.titleLogo }]}>
       <a class="back" href="/#prosjekter">{t('case.allProjects')}</a>

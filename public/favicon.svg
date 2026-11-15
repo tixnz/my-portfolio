@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- ZT monogram (Logo/ZT, Figma 394:8496): Z and T overlapping, ink on the page colour.
+       Switches to light ink when the browser is in dark mode. -->
+  <style>
+    rect { fill: #fdfcfa; }
+    text { fill: #1c1b1a; font: 400 22px 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif; }
+    @media (prefers-color-scheme: dark) {
+      rect { fill: #1a1b1f; }
+      text { fill: #fafaf7; }
+    }
+  </style>
+  <rect width="32" height="32" rx="6" />
+  <text x="7" y="23.5">Z</text>
+  <text x="11.5" y="23.5">T</text>
+</svg>
