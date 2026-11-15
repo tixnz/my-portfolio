@@ -5,7 +5,7 @@ import type { ImageMetadata } from 'astro';
  * a short path like "sats-quests/skisser.png" so MDX stays readable; this
  * resolves the path to the optimisable image at build time.
  */
-const files = import.meta.glob<ImageMetadata>('/src/assets/cases/**/*.{png,jpg,jpeg,webp,avif}', {
+const files = import.meta.glob<ImageMetadata>('/src/assets/cases/**/*.{png,jpg,jpeg,webp,avif,svg}', {
   eager: true,
   import: 'default',
 });

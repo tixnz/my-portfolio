@@ -1,0 +1,60 @@
+---
+/**
+ * Small fixed-size images in a centred grid, e.g. colour palettes
+ * (Figma Værsel "paletter", 369:8555): 360 × 100, 116 px across, 40 px down.
+ */
+import { Image } from 'astro:assets';
+import { resolveImage, type ImageRef } from '../../lib/images';
+
+interface Props {
+  items: { src: ImageRef; alt: string }[];
+  columns?: number;
+  itemWidth?: number;
+  itemHeight?: number;
+  gapX?: number;
+  gapY?: number;
+}
+const {
+  items,
+  columns = 2,
+  itemWidth = 360,
+  itemHeight = 100,
+  gapX = 116,
+  gapY = 40,
+} = Astro.props;
+---
+
+<ul
+  class="grid"
+  style={`--cols: ${columns}; --iw: ${itemWidth}px; --ratio: ${itemWidth} / ${itemHeight}; --gx: ${gapX}px; --gy: ${gapY}px`}
+>
+  {
+    items.map((item) => (
+      <li>
+        <Image src={resolveImage(item.src)} alt={item.alt} width={itemWidth} height={itemHeight} class="img" />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, var(--iw)));
+    justify-content: center;
+    gap: var(--gy) min(var(--gx), 6vw);
+    padding: var(--space-m) 0;
+    list-style: none;
+  }
+  .img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--ratio);
+  }
+  @media (max-width: 1023px) {
+    .grid {
+      grid-template-columns: minmax(0, var(--iw));
+      gap: var(--space-l);
+    }
+  }
+</style>

@@ -9,6 +9,7 @@
  */
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import statusIconsUrl from '../assets/ui/statusbar-icons.svg?url';
 
 interface Props {
   image?: ImageMetadata;
@@ -18,13 +19,29 @@ interface Props {
   scrollable?: boolean;
   /** Accessible name for the scroll area when scrollable */
   scrollLabel?: string;
+  /**
+   * Draw a white iOS status bar (time + icons) above the screenshot.
+   * Use when the screenshot itself has no status bar (Figma 339:7574).
+   */
+  statusBar?: boolean;
+  /** Soft drop shadow under the device (Figma: 0 20 22 rgba(0,0,0,.22) at 399) */
+  shadow?: boolean;
 }
 
-const { image, alt = '', width = 290, scrollable = false, scrollLabel } = Astro.props;
+const {
+  image,
+  alt = '',
+  width = 290,
+  scrollable = false,
+  scrollLabel,
+  statusBar = false,
+  shadow = false,
+} = Astro.props;
 const screenWidth = Math.round((width * 375) / 399);
+const widths = image ? [screenWidth, screenWidth * 2].filter((w) => w <= image.width) : [];
 ---
 
-<div class="phone" style={`--phone-w: ${width}px`}>
+<div class:list={['phone', { 'phone--shadow': shadow }]} style={`--phone-w: ${width}px`}>
   <div
     class:list={['screen', { 'screen--scroll': scrollable }]}
     tabindex={scrollable ? 0 : undefined}
@@ -32,11 +49,19 @@ const screenWidth = Math.round((width * 375) / 399);
     aria-label={scrollable ? (scrollLabel ?? alt) : undefined}
   >
     {
+      statusBar && (
+        <div class="status" aria-hidden="true">
+          <span class="time">9:41</span>
+          <img class="icons" src={statusIconsUrl} alt="" width="70" height="12" />
+        </div>
+      )
+    }
+    {
       image && (
         <Image
           src={image}
           alt={alt}
-          widths={[screenWidth, screenWidth * 2]}
+          widths={widths.length ? widths : [image.width]}
           sizes={`${screenWidth}px`}
           class="shot"
         />
@@ -89,6 +114,34 @@ const screenWidth = Math.round((width * 375) / 399);
   }
   .screen--scroll :global(.shot) {
     height: auto;
+  }
+
+  .phone--shadow {
+    filter: drop-shadow(0 calc(20 * 100cqw / 399) calc(22 * 100cqw / 399) rgba(0, 0, 0, 0.22));
+  }
+
+  /* Status bar: 47 high at 375, sticks to the top while the screen scrolls */
+  .status {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: calc(47 * 100cqw / 399);
+    padding: calc(2 * 100cqw / 399) calc(32 * 100cqw / 399) 0 calc(52 * 100cqw / 399);
+    background: #fff;
+    color: #000;
+  }
+  .time {
+    font-family: -apple-system, 'SF Pro Text', 'Inter', sans-serif;
+    font-size: calc(16 * 100cqw / 399);
+    font-weight: 600;
+    line-height: 1;
+  }
+  .icons {
+    width: calc(70 * 100cqw / 399);
+    height: calc(12 * 100cqw / 399);
   }
   .screen--scroll:focus-visible {
     outline-offset: 2px;

@@ -1,0 +1,126 @@
+---
+/**
+ * User journey: screens 236 × 485 (radius 16) with numbered captions and accent
+ * arrows between them (Figma TV-aksjonen "reise", 334:8483). A step without an
+ * image becomes a text card on the light surface.
+ */
+import { Image } from 'astro:assets';
+import { resolveImage, type ImageRef } from '../../lib/images';
+
+interface Props {
+  items: {
+    caption: string;
+    src?: ImageRef;
+    alt?: string;
+    title?: string;
+    text?: string;
+  }[];
+}
+const { items } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<ol class="journey">
+  {
+    items.map((item, i) => (
+      <>
+        {i > 0 && (
+          <li class="arrow" aria-hidden="true">
+            →
+          </li>
+        )}
+        <li class="step">
+          {item.src ? (
+            <Image
+              src={resolveImage(item.src)}
+              alt={item.alt ?? ''}
+              widths={[236, 472]}
+              sizes="236px"
+              class="screen"
+            />
+          ) : (
+            <div class="card">
+              {item.title && <p class="card-title">{item.title}</p>}
+              {item.text && <p class="card-text">{item.text}</p>}
+            </div>
+          )}
+          <p class="caption">
+            <span class="num">{pad(i + 1)}</span> {item.caption}
+          </p>
+        </li>
+      </>
+    ))
+  }
+</ol>
+
+<style>
+  .journey {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-s);
+    padding: 0;
+    list-style: none;
+  }
+  .step {
+    display: flex;
+    flex: 0 1 236px;
+    flex-direction: column;
+    gap: var(--space-s);
+    min-width: 0;
+  }
+  .screen,
+  .card {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 236 / 485;
+    border-radius: 16px;
+  }
+  .screen {
+    border: 1px solid var(--color-card-border);
+    object-fit: cover;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-s);
+    padding: 0 var(--space-l);
+    background: var(--color-card);
+    line-height: 1.45;
+  }
+  .card-title {
+    font-size: 24px;
+    font-weight: var(--weight-medium);
+    color: var(--color-ink);
+  }
+  .card-text {
+    font-size: var(--text-fact);
+    color: var(--color-ink-strong);
+  }
+  .caption {
+    font-size: var(--text-caption);
+    line-height: normal;
+    color: var(--color-label);
+  }
+  .num {
+    margin-right: 0.25em;
+  }
+  .arrow {
+    flex: 0 0 21px;
+    padding-top: 227px;
+    font-size: 24px;
+    font-weight: var(--weight-medium);
+    line-height: 1.45;
+    color: var(--color-accent);
+  }
+  @media (max-width: 1023px) {
+    .journey {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-xl) var(--space-m);
+    }
+    .arrow {
+      display: none;
+    }
+  }
+</style>

@@ -34,6 +34,15 @@ const { id, number, title, lead } = Astro.props;
     flex-direction: column;
     gap: 40px;
   }
+  /* A step flow under the media sits on the inset with extra space above */
+  .result :global(.result-flow) {
+    margin-top: 240px;
+  }
+  @media (max-width: 767px) {
+    .result :global(.result-flow) {
+      margin-top: var(--space-xl);
+    }
+  }
   .lead {
     max-width: var(--text-measure);
     font-size: var(--text-body);

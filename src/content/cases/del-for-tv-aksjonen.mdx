@@ -1,6 +1,8 @@
 ---
 title: Del for TV-aksjonen
 subtitle: En delingsside og administrasjonsløsning som gjør det enkelt å spre budskapet til NRK TV-aksjonen på sosiale medier
+cover: ../../assets/cases/del-for-tv-aksjonen/hero.png
+coverAlt: Admin-siden for TV-aksjonen i en nettleser, med delingssiden på mobil foran
 cardImage: ../../assets/cards/tv-aksjonen.png
 cardImageAlt: Admin-siden for TV-aksjonen i en nettleser, med delingssiden på mobil foran
 meta: 2024 · Nettside · NRK via Computas
@@ -13,7 +15,198 @@ facts:
   - { label: Team, value: '1 UX-designer, 4 utviklere' }
   - { label: Verktøy, value: Figma }
   - { label: Ansvarsområder, value: 'Workshops, brukertesting, wireframing og prototyping' }
+statement: Bilder og informasjon om TV-aksjonen blir sendt manuelt til fylker, skoler og organisasjoner, men privatpersoner hadde ingen enkel måte å dele budskapet på.
+# TODO: the intro sentence is unfinished in Figma ("sammen med utviklere og ...").
+intro: I dette prosjektet jobbet jeg som designer sammen med utviklere og ... Del for TV-aksjonen er en mobile first nettside der alle kan laste ned bilder i riktige formater og dele dem. En egen administratorside lar administrasjonen styre innholdet.
+tocLogo: ../../assets/cases/del-for-tv-aksjonen/toc-logo.png
+tocLogoAlt: NRK TV-aksjonen
+tocLogoHeight: 146
+toc:
+  - { id: resultat, label: Resultat }
+  - { id: innsikt, label: Innsikt }
+  - { id: delingssiden, label: Delingssiden på mobil }
+  - { id: admin, label: Admin-siden }
+  - { id: refleksjon, label: Refleksjoner }
 next: sats-quests
 ---
 
-{/* Case body follows in phase 5. */}
+import Result from '../../components/case/Result.astro';
+import ScrollingMockups from '../../components/case/ScrollingMockups.astro';
+import StepFlow from '../../components/case/StepFlow.astro';
+import Section from '../../components/case/Section.astro';
+import Group from '../../components/case/Group.astro';
+import Figure from '../../components/case/Figure.astro';
+import KeywordCards from '../../components/case/KeywordCards.astro';
+import MockupGallery from '../../components/case/MockupGallery.astro';
+import Journey from '../../components/case/Journey.astro';
+import Iterations from '../../components/case/Iterations.astro';
+import TextBlock from '../../components/case/TextBlock.astro';
+
+<Result
+  id="resultat"
+  number="01"
+  title="Resultat"
+  lead="Del for TV-aksjonen er satt i produksjon, og nettsiden er i bruk. Privatpersoner laster ned bilder i ønskelig format og deler dem på sosiale medier, mens administrasjonen styrer innholdet fra admin-siden."
+>
+  <ScrollingMockups
+    phone={{
+      src: 'del-for-tv-aksjonen/mobil-hele-siden.png',
+      alt: 'Delingssiden på mobil: årets TV-aksjon, Story og Innlegg, bilder å laste ned og kontaktinformasjon',
+      label: 'Delingssiden på mobil, hele siden. Scroll for å se mer.',
+    }}
+    browser={{
+      src: 'del-for-tv-aksjonen/admin-hele-siden.png',
+      alt: 'Admin-siden: aktiv kampanje for Barnekreftforeningen med redigerbare tekster, bilder og arkiv',
+      label: 'Admin-siden i nettleseren, hele siden. Scroll for å se mer.',
+      address: 'https://delfor.tvaksjonen.no/',
+    }}
+  />
+
+  <div class="case-column result-flow">
+    <StepFlow
+      title="Fra admin-siden til sosiale medier"
+      items={[
+        'Administratoren legger inn bilder og tekst på admin-siden',
+        'Nettsiden viser årets kampanje, tilpasset mobil',
+        'Deleren velger story eller innlegg og laster ned',
+        'Bildet deles på sosiale medier',
+      ]}
+    />
+  </div>
+</Result>
+
+<Section id="innsikt" number="02" label="Innsikt" title="Workshops med kunden" spacing="loose">
+  <Group>
+    Oppgaven var todelt, så jeg valgte to metoder til workshopene med kunden. Den ene kartla dagens prosess, den andre ga raske ideer til delingssiden. Sammen med kunden gjennomførte vi en user journey mapping og crazy 8 for å få raske idéer til hvordan Delingssiden kunne se ut.
+
+    <Figure
+      layout="pair"
+      width={792}
+      height={480}
+      gap={48}
+      align="center"
+      caption="Fra workshopene med NRK TV-aksjonen"
+      images={[
+        { src: 'del-for-tv-aksjonen/workshop-1.png', alt: 'User journey mapping med lapper og tegninger på en vegg' },
+        { src: 'del-for-tv-aksjonen/workshop-2.png', alt: 'Gule lapper fra Crazy 8 på en vegg' },
+      ]}
+    />
+  </Group>
+
+  <Group>
+    ### 4 behov vi fant fra workshopen
+
+    <KeywordCards
+      items={[
+        { label: 'Brukeren', value: 'Brukervennlig' },
+        { label: 'Brukeren', value: 'Informativ' },
+        { label: 'Brukeren', value: 'Få klikk' },
+        { label: 'Administratoren', value: 'Intuitiv admin' },
+      ]}
+    />
+  </Group>
+</Section>
+
+{/* TODO: heading and h3 below are unfinished in Figma ("Veien til å ...", "hvordan jeg skulle ..."). */}
+<Section id="delingssiden" number="03" label="Delingssiden på mobil" title="Veien til å ..." spacing="loose">
+  <Group>
+    ### For å finne ut hvordan jeg skulle ... skisser og tegninger
+
+    Jeg skisserte raske løsninger for å få flere idéer, og lagde også ulike lo-fi løsninger for å X som kunne presenteres til kunde. **Tilbakemeldingene** fra kunden på skissene pekte mot faner. Formatene ble tydelige, og antall klikk holdt seg lavt.
+
+    <MockupGallery
+      device="phone"
+      width={239}
+      items={[
+        { src: 'del-for-tv-aksjonen/lofi-1.png', alt: 'Lo-fi med faner for story og innlegg', caption: 'Lo-fi 1 · Faner for formater' },
+        { src: 'del-for-tv-aksjonen/lofi-2.png', alt: 'Lo-fi med en filterknapp for story og innlegg', caption: 'Lo-fi 2 · Filter for formater' },
+        { src: 'del-for-tv-aksjonen/lofi-3.png', alt: 'Lo-fi med veiledning for hvordan man poster en story på Instagram', caption: 'Lo-fi 3 · Veiledning for å dele' },
+      ]}
+    />
+  </Group>
+
+  <Group>
+    ### Skissering av faner
+
+    Vi testet løsningen internt i flere runder. Til den endelige versjonen justerte vi fargebruk, tekstlige beskrivelser og knapper. Basert på tilbakemeldingene fra kundene om de ulike skissene, baserte vi oss på en “tabs” løsning for å kunne tydeliggjøre bildeformatene med fokus på minimale brukerklikk. Til den endelige løsningen ble det gjort justeringer på fargebruk, tekstlig beskrivelser og knapper. Sluttresultatet ble designet til å en kontinuerlig flyt samt tydeliggjøre knappene og tekstlig informasjon framfor ikoner for å gjøre informasjonen mer forståelig.
+
+    <MockupGallery
+      device="phone"
+      width={325}
+      justify="center"
+      gapX={136}
+      captionAlign="center"
+      items={[
+        { src: 'del-for-tv-aksjonen/forslag-story.png', alt: 'Story-fanen med bilder å laste ned og en info-knapp', caption: 'Info-knappen forklarer hva en story er og hvor den kan deles' },
+        { src: 'del-for-tv-aksjonen/forslag-innlegg.png', alt: 'Innlegg-fanen med bilder og forslag til postetekst', caption: 'Forslag til postetekst som deleren kan kopiere' },
+      ]}
+    />
+  </Group>
+
+  <Group>
+    ### Brukerreisen på mobil
+
+    <p class="small">Brukeren vil ha mulighet til å laste ned bilder og videoer i enten en story- eller innleggformat. For innlegg er det forslag til bildetekst.</p>
+
+    <Journey
+      items={[
+        { src: 'del-for-tv-aksjonen/reise-1-apne.png', alt: 'Forsiden av delingssiden med årets TV-aksjon', caption: 'Åpne nettsiden' },
+        { src: 'del-for-tv-aksjonen/reise-2-velg-format.png', alt: 'Story-fanen valgt, med et bilde og knappen Last ned', caption: 'Velg format og last ned' },
+        { src: 'del-for-tv-aksjonen/reise-3-takk.png', alt: 'Takk for at du sprer budskapet, med lenke til mer om årets TV-aksjon', caption: 'Takk for at du deler' },
+        { title: 'Bildet deles', text: 'Som story eller innlegg på Instagram, Facebook, Snapchat, TikTok eller X.', caption: 'Del på sosiale medier' },
+      ]}
+    />
+  </Group>
+</Section>
+
+<Section id="admin" number="04" label="Admin-siden" title="En løsning for flere admin-brukere">
+  <Group>
+    Siden skulle brukes av flere administratorer med ulik teknisk kompetanse, og valgte derfor en løsning med faste maler, der redaksjonen redigerer innhold i enkle tekstbokser direkte på siden uten å endre oppsettet. Dette gjør at administratorene kan se hvordan endringene blir på nettsiden. Markedsansvarlig i NRK ønsket å kunne bytte mellom bilder, slik at bilder kan arkiveres og hentes frem igjen.
+
+    <Iterations
+      variant="browser"
+      items={[
+        { label: 'Lo-fi skissering', title: 'Lo-fi skisse', src: 'del-for-tv-aksjonen/admin-lofi.png', alt: 'Lo-fi skisse av admin-siden med tomme felter' },
+        { label: 'Iterasjon 2', title: 'Lik nettsiden', src: 'del-for-tv-aksjonen/admin-iterasjon-2.png', alt: 'Admin-siden bygget likt nettsiden, med redigerbare tekstbokser og bilder' },
+        { label: 'Iterasjon 3', title: 'Ferdig versjon', src: 'del-for-tv-aksjonen/admin-ferdig.png', alt: 'Ferdig admin-side med innlegg, bilder og forslag til bildetekst' },
+      ]}
+    />
+  </Group>
+
+  <Group>
+    ### Hele flyten
+
+    <p class="small">Fra innlogging til redigering, arkivering og sletting av bilder. Før et bilde arkiveres, gjenopprettes eller slettes, ber siden om en bekreftelse.</p>
+
+    <MockupGallery
+      device="browser"
+      width={352}
+      columns={3}
+      items={[
+        { src: 'del-for-tv-aksjonen/flyt-1-opprett.png', alt: 'Det er ingen kampanjer som er opprettet, med knappen Opprett en kampanje', caption: '01  Opprett kampanje' },
+        { src: 'del-for-tv-aksjonen/flyt-2-oversikt.png', alt: 'Oversikt over den aktive kampanjen for Barnekreftforeningen', caption: '02  Oversikt over aktiv kampanje' },
+        { src: 'del-for-tv-aksjonen/flyt-3-rediger.png', alt: 'Redigering av tekstene på siden', caption: '03  Rediger innhold' },
+        { src: 'del-for-tv-aksjonen/flyt-4-arkiver.png', alt: 'Dialog: Arkivere bildet?', caption: '04  Arkiver bilde' },
+        { src: 'del-for-tv-aksjonen/flyt-5-gjenopprett.png', alt: 'Dialog: Gjenopprette bildet?', caption: '05  Gjenopprett bilde' },
+        { src: 'del-for-tv-aksjonen/flyt-6-slett.png', alt: 'Dialog: Slette bildet?', caption: '06  Slett bilde' },
+      ]}
+    />
+  </Group>
+</Section>
+
+<Section id="refleksjon" number="05" label="Refleksjoner" title="Jeg har lært å...">
+  <TextBlock title="Å finne min rolle som designer">
+    Fra å jobbe med flere designere til å være eneste designer i et team var en læringskurve. Jeg lærte hvor viktig det er å avklare forventninger tidlig, og samarbeidet med TV-aksjonen og utviklerne ga meg nye perspektiver på hvordan en løsning henger sammen fra start til slutt.
+  </TextBlock>
+
+  <TextBlock title="Inkludere kunde og team">
+    Dette var mitt første prosjekt med en ekstern kunde. Ved å jobbe smidig og dele fremdrift jevnlig med teamet og NRK TV-aksjonen fikk både kunden og teamet trygghet på hverandres arbeid.
+  </TextBlock>
+
+  <Figure
+    width={560}
+    height={700}
+    caption="Teamet :)"
+    images={[{ src: 'del-for-tv-aksjonen/teamet.jpg', alt: 'Fem personer fra teamet på en takterrasse' }]}
+  />
+</Section>

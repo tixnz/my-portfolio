@@ -2,16 +2,18 @@
 /**
  * Iteration progression: steps side by side with accent arrows between them.
  *   phone – screen in the code-built iPhone frame (Figma "progresjon", 269:1721)
- *   card  – a cropped component on a light surface (Figma 270:1892)
+ *   card    – a cropped component on a light surface (Figma 270:1892)
+ *   browser – a screen in the code-built browser frame (Figma TV-aksjonen 333:7621)
  * On phones the steps stack and the arrows point down.
  */
 import { Image } from 'astro:assets';
 import PhoneFrame from '../PhoneFrame.astro';
+import BrowserFrame from '../BrowserFrame.astro';
 import { resolveImage, type ImageRef } from '../../lib/images';
 
 interface Props {
-  variant?: 'phone' | 'card';
-  items: { label: string; title?: string; src: ImageRef; alt: string; text: string }[];
+  variant?: 'phone' | 'card' | 'browser';
+  items: { label: string; title?: string; src: ImageRef; alt: string; text?: string }[];
 }
 const { variant = 'phone', items } = Astro.props;
 ---
@@ -31,6 +33,8 @@ const { variant = 'phone', items } = Astro.props;
           <div class="media">
             {variant === 'phone' ? (
               <PhoneFrame image={resolveImage(item.src)} alt={item.alt} width={279} />
+            ) : variant === 'browser' ? (
+              <BrowserFrame image={resolveImage(item.src)} alt={item.alt} width={325} screenRatio={325 / 279} />
             ) : (
               <Image
                 src={resolveImage(item.src)}
@@ -41,7 +45,7 @@ const { variant = 'phone', items } = Astro.props;
               />
             )}
           </div>
-          <p class="text">{item.text}</p>
+          {item.text && <p class="text">{item.text}</p>}
         </li>
       </>
     ))
@@ -94,6 +98,12 @@ const { variant = 'phone', items } = Astro.props;
   }
   .iterations--card .arrow {
     padding-top: 150px;
+  }
+  .iterations--browser .arrow {
+    padding-top: 200px;
+  }
+  .iterations--browser .media {
+    display: block;
   }
 
   .media {

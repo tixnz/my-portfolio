@@ -4,7 +4,9 @@
  *   single  – one image (Figma 251:1486, 640 high)
  *   pair    – two equal images, 16 px apart (Figma 265:1719, 402 high)
  *   feature – large image + a 372 px column of two stacked images (Figma 264:1746, 360 high)
- * Images are cropped to fill (object-fit: cover) like the Figma frames.
+ *
+ * fit:   cover (crop to fill, default) or contain (show the whole image, e.g. diagrams)
+ * width: limit the figure width (px); align it left or centre in the column
  * On phones the images stack and keep their own proportions.
  */
 import { Image } from 'astro:assets';
@@ -15,15 +17,34 @@ interface Props {
   layout?: 'single' | 'pair' | 'feature';
   /** Row height in px on desktop */
   height?: number;
+  width?: number;
+  align?: 'start' | 'center';
+  fit?: 'cover' | 'contain';
+  /** Gap between images in px (default 16) */
+  gap?: number;
   caption?: string;
 }
 
-const { images, layout = 'single', height = 480, caption } = Astro.props;
+const {
+  images,
+  layout = 'single',
+  height = 480,
+  width,
+  align = 'start',
+  fit = 'cover',
+  gap = 16,
+  caption,
+} = Astro.props;
 const resolved = images.map((img) => ({ ...img, src: resolveImage(img.src) }));
-const sizes = layout === 'single' ? '(max-width: 1023px) 100vw, 1088px' : '(max-width: 767px) 100vw, 700px';
+const maxW = width ?? 1088;
+const sizes =
+  layout === 'single' ? `(max-width: 1023px) 100vw, ${maxW}px` : '(max-width: 767px) 100vw, 700px';
+const style = [`--h: ${height}px`, width ? `--w: ${width}px` : '', `--fit: ${fit}`, `--gap: ${gap}px`]
+  .filter(Boolean)
+  .join('; ');
 ---
 
-<figure class:list={['figure', `figure--${layout}`]} style={`--h: ${height}px`}>
+<figure class:list={['figure', `figure--${layout}`, `figure--${align}`]} style={style}>
   <div class="images">
     {
       layout === 'feature' ? (
@@ -37,7 +58,7 @@ const sizes = layout === 'single' ? '(max-width: 1023px) 100vw, 1088px' : '(max-
         </>
       ) : (
         resolved.map((img) => (
-          <Image src={img.src} alt={img.alt} widths={[544, 1088, 2176]} sizes={sizes} class="img" />
+          <Image src={img.src} alt={img.alt} widths={[maxW / 2, maxW, maxW * 2].map(Math.round)} sizes={sizes} class="img" />
         ))
       )
     }
@@ -50,18 +71,23 @@ const sizes = layout === 'single' ? '(max-width: 1023px) 100vw, 1088px' : '(max-
     display: flex;
     flex-direction: column;
     gap: var(--space-s);
+    width: 100%;
+    max-width: var(--w, none);
     margin: 0;
+  }
+  .figure--center {
+    align-self: center;
   }
   .images {
     display: flex;
-    gap: var(--space-m);
+    gap: var(--gap);
     height: var(--h);
   }
   .img {
     flex: 1 1 0;
     min-width: 0;
     height: 100%;
-    object-fit: cover;
+    object-fit: var(--fit);
     border-radius: var(--radius-xs);
   }
   .col {

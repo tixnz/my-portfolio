@@ -1,0 +1,78 @@
+---
+/**
+ * Numbered steps in outlined cards with accent arrows between them
+ * (Figma TV-aksjonen "oversikt", 357:86). Optional 24 px heading above.
+ */
+import LightCard from '../LightCard.astro';
+
+interface Props {
+  title?: string;
+  items: string[];
+}
+const { title, items } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<div class="step-flow">
+  {title && <h3 class="title">{title}</h3>}
+  <ol class="steps">
+    {
+      items.map((text, i) => (
+        <>
+          {i > 0 && (
+            <li class="arrow" aria-hidden="true">
+              →
+            </li>
+          )}
+          <LightCard as="li" variant="outlined" number={pad(i + 1)}>
+            {text}
+          </LightCard>
+        </>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .step-flow {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    max-width: var(--case-content);
+  }
+  .title {
+    font-size: 24px;
+    font-weight: var(--weight-medium);
+    line-height: 1.45;
+    color: var(--color-ink);
+  }
+  .steps {
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-s);
+    padding: 0;
+    list-style: none;
+  }
+  .steps > :global(.light-card) {
+    flex: 0 1 236px;
+  }
+  .arrow {
+    align-self: center;
+    flex: 0 0 21px;
+    font-size: 24px;
+    font-weight: var(--weight-medium);
+    line-height: 1.45;
+    color: var(--color-accent);
+  }
+  @media (max-width: 767px) {
+    .steps {
+      flex-direction: column;
+    }
+    .steps > :global(.light-card) {
+      flex-basis: auto;
+    }
+    .arrow {
+      transform: rotate(90deg);
+    }
+  }
+</style>

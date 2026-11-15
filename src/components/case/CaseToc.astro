@@ -11,13 +11,25 @@ interface Props {
   items: { id: string; label: string }[];
   logo?: ImageMetadata;
   logoAlt?: string;
+  logoHeight?: number;
 }
-const { items, logo, logoAlt = '' } = Astro.props;
+const { items, logo, logoAlt = '', logoHeight = 52 } = Astro.props;
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
 <nav class="toc" aria-label={t('case.contents')} data-toc>
-  {logo && <Image src={logo} alt={logoAlt} class="logo" width={166} />}
+  {
+    logo && (
+      <Image
+        src={logo}
+        alt={logoAlt}
+        class="logo"
+        height={logoHeight}
+        densities={[1, 2]}
+        style={`height: ${logoHeight}px`}
+      />
+    )
+  }
   <ol>
     {
       items.map((item, i) => (
@@ -43,9 +55,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
     padding-top: 8px;
   }
   .logo {
+    align-self: flex-start;
     width: auto;
-    height: 52px;
-    margin-bottom: 0;
   }
   ol {
     display: flex;

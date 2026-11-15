@@ -1,0 +1,66 @@
+---
+/**
+ * Numbered finding cards beside an image (Figma Værsel "funn og affinity", 369:8623).
+ * Cards fill the left column; the image is 620 px wide and as tall as the list.
+ */
+import { Image } from 'astro:assets';
+import LightCard from '../LightCard.astro';
+import { resolveImage, type ImageRef } from '../../lib/images';
+
+interface Props {
+  items: string[];
+  image?: { src: ImageRef; alt: string };
+}
+const { items, image } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<div class="numbered">
+  <ol class="cards">
+    {items.map((text, i) => <LightCard as="li" number={pad(i + 1)}>{text}</LightCard>)}
+  </ol>
+  {
+    image && (
+      <Image
+        src={resolveImage(image.src)}
+        alt={image.alt}
+        widths={[620, 1240]}
+        sizes="(max-width: 767px) 100vw, 620px"
+        class="img"
+      />
+    )
+  }
+</div>
+
+<style>
+  .numbered {
+    display: flex;
+    gap: var(--space-l);
+  }
+  .cards {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--space-xs);
+    min-width: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .img {
+    flex: 0 0 620px;
+    width: 620px;
+    height: auto;
+    align-self: stretch;
+    object-fit: cover;
+    border-radius: var(--radius-xs);
+  }
+  @media (max-width: 1023px) {
+    .numbered {
+      flex-direction: column;
+    }
+    .img {
+      flex-basis: auto;
+      width: 100%;
+    }
+  }
+</style>

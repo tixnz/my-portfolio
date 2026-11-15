@@ -1,0 +1,103 @@
+---
+/**
+ * Row(s) of device mockups with captions, built from screen exports.
+ *   phone   – lo-fi row (Figma 349:8192): 239 wide, spread across the column
+ *             proposals (Figma 358:8847): 325 wide, centred, captions centred
+ *   browser – admin flow (Figma 333:7955): 352 wide, 3 per row, 16 / 32 px gaps
+ */
+import PhoneFrame from '../PhoneFrame.astro';
+import BrowserFrame from '../BrowserFrame.astro';
+import { resolveImage, type ImageRef } from '../../lib/images';
+
+interface Props {
+  device?: 'phone' | 'browser';
+  items: { src: ImageRef; alt: string; caption?: string }[];
+  /** Device width in px on desktop */
+  width?: number;
+  columns?: number;
+  /** spread: space-between across the column; center: centred with a fixed gap */
+  justify?: 'spread' | 'center';
+  gapX?: number;
+  gapY?: number;
+  captionAlign?: 'start' | 'center';
+  /** Browser screen ratio (width / height) */
+  screenRatio?: number;
+  shadow?: boolean;
+}
+
+const {
+  device = 'phone',
+  items,
+  width = device === 'phone' ? 239 : 352,
+  columns = items.length,
+  justify = 'spread',
+  gapX = 16,
+  gapY = 32,
+  captionAlign = 'start',
+  screenRatio = 352 / 198,
+  shadow = device === 'phone',
+} = Astro.props;
+---
+
+<ul
+  class:list={['gallery', `gallery--${justify}`, `gallery--caption-${captionAlign}`]}
+  style={`--cols: ${columns}; --w: ${width}px; --gx: ${gapX}px; --gy: ${gapY}px`}
+>
+  {
+    items.map((item) => (
+      <li class="item">
+        <figure>
+          {device === 'phone' ? (
+            <PhoneFrame image={resolveImage(item.src)} alt={item.alt} width={width} shadow={shadow} />
+          ) : (
+            <BrowserFrame
+              image={resolveImage(item.src)}
+              alt={item.alt}
+              width={width}
+              screenRatio={screenRatio}
+              shadow={shadow}
+            />
+          )}
+          {item.caption && <figcaption>{item.caption}</figcaption>}
+        </figure>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, var(--w)));
+    gap: var(--gy) min(var(--gx), 4vw);
+    padding: 0;
+    list-style: none;
+  }
+  .gallery--spread {
+    justify-content: space-between;
+  }
+  .gallery--center {
+    justify-content: center;
+  }
+  figure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+    margin: 0;
+  }
+  .gallery--caption-center figure {
+    align-items: center;
+    text-align: center;
+  }
+  figcaption {
+    font-size: var(--text-caption);
+    line-height: 1.5;
+    color: var(--color-label);
+  }
+  @media (max-width: 1023px) {
+    .gallery {
+      grid-template-columns: repeat(auto-fit, minmax(min(var(--w), 100%), var(--w)));
+      justify-content: center;
+    }
+  }
+</style>

@@ -17,6 +17,13 @@ interface Props {
   gap?: number;
   caption?: string;
   label?: string;
+  /** Hint next to the caption; defaults to the UI string. Pass "" to hide it. */
+  hint?: string;
+  /** Put the caption row on the 288 px case inset (default) or the page margin */
+  inset?: boolean;
+  /** Space between strip and caption, and below the block (px) */
+  captionGap?: number;
+  spaceAfter?: number;
 }
 
 const {
@@ -26,10 +33,14 @@ const {
   gap = 20,
   caption,
   label = caption ?? '',
+  hint = t('strip.hint'),
+  inset = true,
+  captionGap = 40,
+  spaceAfter = 0,
 } = Astro.props;
 ---
 
-<div class="strip-block" data-strip>
+<div class="strip-block" data-strip style={`--caption-gap: ${captionGap}px; padding-bottom: ${spaceAfter}px`}>
   <ul
     class="strip"
     style={`--item-w: ${itemWidth}px; --item-ratio: ${itemWidth} / ${itemHeight}; --gap: ${gap}px`}
@@ -52,9 +63,9 @@ const {
     }
   </ul>
 
-  <div class="caption-row case-column">
+  <div class:list={['caption-row', { 'case-column': inset }]}>
     {caption && <p class="caption">{caption}</p>}
-    <p class="hint" aria-hidden="true">{t('strip.hint')}</p>
+    {hint && <p class="hint" aria-hidden="true">{hint}</p>}
     <div class="arrows">
       <button type="button" class="arrow" data-strip-prev aria-label={t('strip.prev')}>←</button>
       <button type="button" class="arrow" data-strip-next aria-label={t('strip.next')}>→</button>
@@ -96,7 +107,7 @@ const {
     display: flex;
     align-items: center;
     gap: var(--space-l);
-    margin-top: 40px;
+    margin-top: var(--caption-gap);
   }
   .caption,
   .hint {

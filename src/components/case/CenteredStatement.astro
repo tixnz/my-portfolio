@@ -1,0 +1,45 @@
+---
+/**
+ * Centred intro text followed by a large statement or question
+ * (Figma UNG + MUNCH "Intro", 192:1271): 22 px text (760) then 56 px (1000).
+ */
+interface Props {
+  intro?: string;
+  statement: string;
+}
+const { intro, statement } = Astro.props;
+---
+
+<div class="centered">
+  {intro && <p class="intro">{intro}</p>}
+  <p class="statement">{statement}</p>
+</div>
+
+<style>
+  .centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 56px;
+    padding-block: 160px;
+    text-align: center;
+    color: var(--color-ink-strong);
+  }
+  .intro {
+    max-width: var(--text-measure);
+    font-size: var(--text-body);
+    line-height: 1.5;
+  }
+  .statement {
+    max-width: 1000px;
+    font-size: var(--text-h2);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  @media (max-width: 767px) {
+    .centered {
+      gap: var(--space-xl);
+      padding-block: var(--space-3xl);
+    }
+  }
+</style>

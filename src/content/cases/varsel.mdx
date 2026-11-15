@@ -1,6 +1,10 @@
 ---
 title: Værsel
 subtitle: En mobil-app for barn og unge for å varsle om vær- og farevarsler
+cover: ../../assets/cases/varsel/hero-telefoner.png
+coverAlt: 'To mobiler med Værsel-appen, den ene med dagens vær og den andre med vindforklaringen «Vind: Svak»'
+coverFit: contain
+coverBackground: '#b9c6ae'
 cardImage: ../../assets/cards/varsel.jpg
 cardImageAlt: To mobiler med Værsel-appen som viser værvarsel og klesråd
 meta: 2024 · Mobil · Studieprosjekt
@@ -13,7 +17,145 @@ facts:
   - { label: Team, value: '1 UX-designer, 4 utviklere' }
   - { label: Verktøy, value: 'Figma, Jetpack Compose, Kotlin' }
   - { label: Ansvarsområder, value: 'Intervjuer, fokusgrupper, brukertesting og prototyping' }
+statement: Barn og unge bruker vær-apper lite, og værbegreper og enkelte farevarsler er vanskelige å forstå.
+intro: I samarbeid med Meteorologisk Institutt har jeg og mitt team designet og utviklet Værsel, en app for barn og unge i aldersgruppen 9 til 14 år. Min rolle i prosjektet har vært å jobbe med innsikt, designsystem, prototyper og brukertesting for applikasjonen som har blitt utviklet i Android Studio.
+tocLogo: ../../assets/cases/varsel/toc-logo.png
+tocLogoAlt: Værsel-logoen, en hvit sel på blå sirkel
+tocLogoHeight: 180
+toc:
+  - { id: resultat, label: Resultat }
+  - { id: innsikt, label: Innsikt }
+  - { id: idemyldring, label: Idémyldring }
+  - { id: testing, label: Testing og iterasjoner }
+  - { id: refleksjon, label: Hva jeg lærte }
 next: ung-munch
 ---
 
-{/* Case body follows in phase 5. */}
+import Result from '../../components/case/Result.astro';
+import Section from '../../components/case/Section.astro';
+import Group from '../../components/case/Group.astro';
+import Figure from '../../components/case/Figure.astro';
+import NumberedFindings from '../../components/case/NumberedFindings.astro';
+import ImageGrid from '../../components/case/ImageGrid.astro';
+import TextBlock from '../../components/case/TextBlock.astro';
+
+<Result
+  id="resultat"
+  number="01"
+  title="Resultat"
+  lead="Værsel har tre sider. Hjemmesiden viser dagens vær, nedbør, vind og forslag til antrekk. Langtidsvarselet viser de neste sju dagene time for time, og i innstillinger kan man velge fargetema etter årstid."
+>
+  <Figure
+    width={760}
+    height={760}
+    align="center"
+    fit="contain"
+    images={[{ src: 'varsel/hero-telefoner.png', alt: 'Hjemmesiden med dagens vær og antrekk, og vindforklaringen «Vind: Svak»' }]}
+  />
+</Result>
+
+<Section id="innsikt" number="02" label="Innsikt" title="Innsikt">
+  <Group gap="loose">
+    Vi jobbet etter Double Diamond og kombinerte **intervjuer, fokusgrupper** og praktiske oppgaver for å triangulere funnene. De yngste deltok i fokusgrupper, mens de eldre ble intervjuet individuelt.
+
+    <Figure
+      width={729}
+      height={374}
+      align="center"
+      fit="contain"
+      images={[{ src: 'varsel/double-diamond.png', alt: 'Double Diamond-modellen: utforske, definere, utvikle og levere, fra problem til løsning' }]}
+    />
+  </Group>
+
+  <Group gap="loose">
+    ### 5 sentrale funn
+
+    Gjennom affinity mapping fant vi fem sentrale funn. Disse hjalp til å utforme en persona for å identifisere målgruppens behov, samt vaner, frustrasjoner og teknologisk kompetanse.
+
+    <NumberedFindings
+      items={[
+        'Vær-apper brukes i liten grad',
+        'Værvarsel brukes for å velge klær',
+        'Foreldrene formidler informasjon',
+        'Værbegreper er vanskelige å forstå',
+        'Noen farevarsler er uklare',
+      ]}
+      image={{ src: 'varsel/affinity.png', alt: 'Affinity-kart med lapper sortert under Værvarsel, Utfordringer og Funksjonalitet' }}
+    />
+
+    <Figure
+      width={680}
+      height={331}
+      align="center"
+      fit="contain"
+      images={[{ src: 'varsel/persona.png', alt: 'Persona: Ole, 12 år, elev i Oslo, med personlige detaljer, frustrasjoner og ønsker' }]}
+    />
+  </Group>
+</Section>
+
+<Section id="idemyldring" number="03" title="Idémyldring">
+  <Group>
+    ### Wireframe for en forenklet MVP
+
+    Med Crazy 8 i teamet skisserte vi ulike funksjonaliteter som kunne utvikles til en enkel wireframe for en MVP.
+
+    <Figure
+      height={476}
+      caption="Lavoppløselig wireframe"
+      images={[{ src: 'varsel/wireframe.png', alt: 'Fire lavoppløselige wireframes av appens skjermer' }]}
+    />
+  </Group>
+
+  <Group>
+    ### Farger etter årstid
+
+    Målgruppen bruker sjelden vær-apper, så vi undersøkte hvordan vi kunne skape mer engasjement og bruk. Vi utforsket blant annet hvordan farger kan knyttes til været, og endte opp med årstider. Hver årstid fikk sitt eget fargetema, slik at brukerne selv kan tilpasse appen og få en mer personlig opplevelse.
+
+    <ImageGrid
+      items={[
+        { src: 'varsel/palett-1.svg', alt: 'Fargepalett i grønne toner' },
+        { src: 'varsel/palett-2.svg', alt: 'Fargepalett i oransje og brune toner' },
+        { src: 'varsel/palett-3.svg', alt: 'Fargepalett i rødbrune og gule toner' },
+        { src: 'varsel/palett-4.svg', alt: 'Fargepalett i blå og lilla toner' },
+      ]}
+    />
+  </Group>
+</Section>
+
+<Section id="testing" number="04" label="Testing og iterasjoner" title="Jeg utforsket hvordan vær kunne være spennende for en yngre målgruppe.">
+  <Group gap="loose">
+    Vi jobbet i to iterasjoner, og testet løsningen med målgruppen på 2 skoler i ulike klassetrinn.
+
+    <Figure
+      width={864}
+      height={499}
+      images={[{ src: 'varsel/iterasjon-1.png', alt: 'Første iterasjon: hjemmeside, timesvarsel og tema-innstillinger' }]}
+    />
+
+    For å løse utfordringen med vær-begreper, prototypet jeg til å sette disse i fokus gjennom bruk av tydelige knapper på hjemskjermen. Jeg valgte dermed å fokusere på nedbør og vind som sentrale værbegreper og forenkle språket for å gjøre det forståelig. Antrekk ble også inkludert for å hjelpe målgruppen til å finne passende klær for været.
+
+    <Figure
+      height={398}
+      fit="contain"
+      images={[{ src: 'varsel/iterasjon-2.png', alt: 'Andre iterasjon: hjemmeside, streak, vindforklaring, rødt farevarsel og innstillinger' }]}
+    />
+
+    Til vår andre iterasjon gjennomførte vi brukertester med målgruppen. Vi fikk tilbakemeldinger om at ikonene var “kjedelige” – og dermed satte i gang å designe skreddersydde ikoner. Det ble designet og utviklet animasjoner for vindkast for å få en visuell forståelse.
+  </Group>
+</Section>
+
+<Section id="refleksjon" number="05" label="Refleksjoner" title="Jeg har lært å…">
+  <TextBlock title="Samarbeide i et tverrfaglig team">
+    Jeg var heldig som fikk muligheten til å være i et team med studenter med ulike studiebakgrunner. Dette prosjektet tillot meg til å kunne undersøke og utforske ulike deler av designprosesser, men også bidra til utvikling av applikasjoner.
+  </TextBlock>
+
+  <TextBlock title="Jobbe smidig">
+    Både individuelt og i team, har jeg lært mer om hvordan arbeidsoppgaver prioriteres og struktureres i et prosjekt. Det har lært meg til hvordan jeg kan jobbe mer effektivt, strukturert, og ikke minst hvordan jeg kommuniserer i et team for å oppnå mine oppgaver og mål.
+  </TextBlock>
+
+  <Figure
+    height={589}
+    caption="Teamet :)"
+    images={[{ src: 'varsel/teamet.jpg', alt: 'Seks personer fra teamet smiler til kamera' }]}
+  />
+</Section>

@@ -29,24 +29,35 @@ const d = entry.data;
 
 <BaseLayout title={d.title} description={d.subtitle ?? d.summary} theme={d.theme}>
   <article class="case">
-    <header class="page title-block">
+    <header class:list={['page', 'title-block', { 'title-block--logo': d.titleLogo }]}>
       <a class="back" href="/#prosjekter">{t('case.allProjects')}</a>
-      <h1 class="title">{d.title}</h1>
+      {
+        d.titleLogo ? (
+          <h1 class="logo-title">
+            {d.titlePrefix && <span>{d.titlePrefix}</span>}
+            <Image src={d.titleLogo} alt={d.titleLogoAlt ?? ''} height={120} class="logo-img" loading="eager" />
+          </h1>
+        ) : (
+          <h1 class="title">{d.title}</h1>
+        )
+      }
       {d.subtitle && <p class="subtitle">{d.subtitle}</p>}
     </header>
 
     {
       d.cover && (
         <div class="page">
-          <Image
-            src={d.cover}
-            alt={d.coverAlt ?? ''}
-            widths={[688, 1376, 2752]}
-            sizes="(max-width: 1440px) calc(100vw - 2 * var(--page-margin)), 1376px"
-            class="hero"
-            loading="eager"
-            fetchpriority="high"
-          />
+          <div class="hero-frame" style={d.coverBackground ? `background: ${d.coverBackground}` : undefined}>
+            <Image
+              src={d.cover}
+              alt={d.coverAlt ?? ''}
+              widths={[688, 1376, 2752]}
+              sizes="(max-width: 1440px) calc(100vw - 2 * var(--page-margin)), 1376px"
+              class:list={['hero', `hero--${d.coverFit}`]}
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
         </div>
       )
     }
@@ -65,7 +76,11 @@ const d = entry.data;
     }
 
     <div class:list={['page', 'case-content', { 'has-toc': d.toc.length > 0 }]}>
-      {d.toc.length > 0 && <CaseToc items={d.toc} logo={d.tocLogo} logoAlt={d.tocLogoAlt} />}
+      {
+        d.toc.length > 0 && (
+          <CaseToc items={d.toc} logo={d.tocLogo} logoAlt={d.tocLogoAlt} logoHeight={d.tocLogoHeight} />
+        )
+      }
       <slot />
     </div>
 
@@ -101,6 +116,26 @@ const d = entry.data;
     text-transform: uppercase;
     color: var(--color-ink-strong);
   }
+  /* Logo title (Figma 192:1252): text + logo image, centred, 120 px */
+  .title-block--logo {
+    padding-bottom: var(--space-3xl);
+  }
+  .logo-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-s);
+    padding: 72px 0 var(--space-l);
+    font-size: clamp(3rem, 8.33vw, 7.5rem); /* 120 px */
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--color-ink-strong);
+  }
+  .logo-img {
+    width: auto;
+    height: 1em;
+  }
   .subtitle {
     max-width: 900px;
     font-size: clamp(1.25rem, 2.1vw, 1.875rem); /* 30 px */
@@ -110,11 +145,18 @@ const d = entry.data;
   }
 
   /* Hero */
+  .hero-frame {
+    aspect-ratio: 1376 / 720;
+    overflow: hidden;
+    border-radius: var(--radius-xs);
+  }
   .hero {
     width: 100%;
-    height: auto;
-    aspect-ratio: 1376 / 720;
+    height: 100%;
     object-fit: cover;
+  }
+  .hero--contain {
+    object-fit: contain;
   }
 
   /* Intro */
@@ -179,7 +221,7 @@ const d = entry.data;
   :global(.case-content:has(> .result) > .toc) {
     margin-top: var(--space-section);
   }
-  :global(.case-content:not(:has(> .result))) {
+  :global(.case-content.has-toc:not(:has(> .result))) {
     padding-top: var(--space-section);
   }
 

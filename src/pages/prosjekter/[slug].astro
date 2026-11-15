@@ -6,7 +6,7 @@ export async function getStaticPaths() {
   const cases = await getCollection('cases', ({ data }) => !data.draft);
   // A case gets a page once its cover is in place (the body is being written case by case).
   return cases
-    .filter((entry) => entry.data.cover)
+    .filter((entry) => entry.data.cover || entry.data.titleLogo)
     .map((entry) => ({
       params: { slug: entry.id },
       props: { entry, next: cases.find((c) => c.id === entry.data.next) },

@@ -11,11 +11,17 @@ interface Props {
   number: string;
   label?: string;
   title: string;
+  /** Space between the heading and groups: default 48 px, loose 80 px (TV-aksjonen) */
+  spacing?: 'default' | 'loose';
 }
-const { id, number, label, title } = Astro.props;
+const { id, number, label, title, spacing = 'default' } = Astro.props;
 ---
 
-<section class="case-section prose" id={id} aria-labelledby={`${id}-heading`}>
+<section
+  class:list={['case-section', 'prose', { 'case-section--loose': spacing === 'loose' }]}
+  id={id}
+  aria-labelledby={`${id}-heading`}
+>
   <CaseSectionHeading number={number} label={label} id={`${id}-heading`}>{title}</CaseSectionHeading>
   <slot />
 </section>
@@ -27,5 +33,13 @@ const { id, number, label, title } = Astro.props;
     gap: var(--space-2xl);
     padding-bottom: var(--space-section);
     scroll-margin-top: var(--space-xl);
+  }
+  .case-section--loose {
+    gap: 80px;
+  }
+  @media (max-width: 767px) {
+    .case-section--loose {
+      gap: var(--space-2xl);
+    }
   }
 </style>

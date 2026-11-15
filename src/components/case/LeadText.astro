@@ -1,0 +1,35 @@
+---
+/**
+ * Labelled block with a large lead and body text
+ * (Figma UNG + MUNCH "Konseptet", 192:1279): 36 px lead (1100), 22 px body (760).
+ * Write the lead as the first paragraph in the slot.
+ */
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+---
+
+<section class="lead-text prose">
+  <h2 class="block-label">{label}</h2>
+  <slot />
+</section>
+
+<style>
+  .lead-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-l);
+    padding-bottom: var(--space-3xl);
+  }
+  .lead-text :global(p) {
+    max-width: var(--text-measure);
+    line-height: 1.5;
+    color: var(--color-ink-strong);
+  }
+  .lead-text :global(p:first-of-type) {
+    max-width: 1100px;
+    font-size: clamp(1.5rem, 2.5vw, 2.25rem); /* 36 px */
+    line-height: 1.25;
+  }
+</style>

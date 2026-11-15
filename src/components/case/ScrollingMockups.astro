@@ -1,0 +1,67 @@
+---
+/**
+ * Phone and browser side by side, each scrolling its own full-page screenshot
+ * (Figma TV-aksjonen "resultat/visning (scrollbar)", 339:7568).
+ * Phone 353 × 740, browser 975 × 740, 48 px apart, across the full page width.
+ */
+import PhoneFrame from '../PhoneFrame.astro';
+import BrowserFrame from '../BrowserFrame.astro';
+import { resolveImage, type ImageRef } from '../../lib/images';
+
+interface Props {
+  phone: { src: ImageRef; alt: string; label: string };
+  browser: { src: ImageRef; alt: string; label: string; address?: string };
+}
+const { phone, browser } = Astro.props;
+---
+
+<div class="scrolling">
+  <PhoneFrame
+    image={resolveImage(phone.src)}
+    alt={phone.alt}
+    width={353}
+    scrollable
+    scrollLabel={phone.label}
+    statusBar
+    shadow
+  />
+  <div class="browser-slot">
+    <BrowserFrame
+      image={resolveImage(browser.src)}
+      alt={browser.alt}
+      width={975}
+      screenRatio={975 / 704}
+      address={browser.address}
+      scrollable
+      scrollLabel={browser.label}
+      shadow
+    />
+  </div>
+</div>
+
+<style>
+  .scrolling {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2xl);
+    padding: 10px 0;
+  }
+  .browser-slot {
+    flex: 1 1 975px;
+    min-width: 0;
+  }
+  .scrolling > :global(.phone) {
+    flex: 0 0 auto;
+    width: 353px;
+  }
+  @media (max-width: 1023px) {
+    .scrolling {
+      flex-direction: column;
+      align-items: center;
+    }
+    .browser-slot {
+      flex-basis: auto;
+      width: 100%;
+    }
+  }
+</style>

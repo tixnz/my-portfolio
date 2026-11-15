@@ -1,5 +1,8 @@
 ---
 title: UNG + MUNCH
+titlePrefix: UNG +
+titleLogo: ../../assets/cases/ung-munch/munch-logo.png
+titleLogoAlt: MUNCH
 cardTitle: UX Cup
 cardImage: ../../assets/cards/ung-munch.png
 cardImageAlt: Bekk-logoen i hvitt på svart bakgrunn
@@ -17,4 +20,38 @@ facts:
 next: del-for-tv-aksjonen
 ---
 
-{/* Case body follows in phase 5. */}
+import CenteredStatement from '../../components/case/CenteredStatement.astro';
+import TextWithImage from '../../components/case/TextWithImage.astro';
+import LeadText from '../../components/case/LeadText.astro';
+import ScreenStrip from '../../components/case/ScreenStrip.astro';
+
+<CenteredStatement
+  intro="Høsten 2024 deltok jeg sammen med to medstudenter i finalen på UX Cup, arrangert av Bekk. Caset ble utviklet i samarbeid med MUNCH, med følgende problemstilling:"
+  statement="Hvordan kan vi få unge til å gjenbesøke MUNCH?"
+/>
+
+<TextWithImage label="Innsikt" src="ung-munch/innsikt-munch.jpg" alt="To av deltakerne poserer i et vindu høyt oppe i MUNCH-bygget">
+  I løpet av et intensivt tredagersprosjekt jobbet vi med en kort innsiktsfase og interne idémyldringsworkshops. For å få raske og relevante innspill gjennomførte vi «5 på gata»-intervjuer og et digitalt spørreskjema. Vi oppdaget at mange unge voksne hadde besøkt museet kun **én gang**, ofte i forbindelse med skole, og at **interaktive utstillinger** var det som hadde **engasjert mest.**
+</TextWithImage>
+
+<LeadText label="Konseptet">
+  Basert på funnene utviklet vi konseptet **UNG + MUNCH**, en tjeneste som samler skreddersydde forslag til aktiviteter og arrangementer på museet.
+
+  Konseptet inneholdt personaliserte anbefalinger, teasere for kommende arrangementer, oversikt over temporære utstillinger og digitale elementer inspirert av museets interaktive kunst. Målet var å senke terskelen for besøk, skape nysgjerrighet og gjøre det enklere for unge voksne å oppdage at MUNCH er mer enn et museum.
+</LeadText>
+
+<ScreenStrip
+  caption="Skjermer fra UNG + MUNCH"
+  hint=""
+  inset={false}
+  itemWidth={800}
+  itemHeight={450}
+  gap={24}
+  captionGap={16}
+  spaceAfter={160}
+  items={[
+    { src: 'ung-munch/skjerm-1-utforsk.jpg', alt: 'Utforsk-flyten: forsiden med teaservideo og skreddersydde forslag til arrangementer' },
+    { src: 'ung-munch/skjerm-2-kategorier.jpg', alt: 'Velg kategorier som appellerer til deg, og anbefalte arrangementer basert på valgene' },
+    { src: 'ung-munch/skjerm-3-nysgjerrighet.jpg', alt: 'Nysgjerrighet: snarveier til alle arrangementer, alle utstillinger og temporære utstillinger' },
+  ]}
+/>

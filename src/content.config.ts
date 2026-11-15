@@ -12,11 +12,21 @@ const cases = defineCollection({
     z.object({
       lang: z.enum(['no', 'en']).default('no'),
       title: z.string(),
+      /**
+       * Logo title instead of the 112 px text title (UNG + MUNCH):
+       * titlePrefix is set as text, followed by the logo image.
+       */
+      titlePrefix: z.string().optional(),
+      titleLogo: image().optional(),
+      titleLogoAlt: z.string().optional(),
       /** Optional: UNG + MUNCH uses a logo title with no subtitle */
       subtitle: z.string().optional(),
       /** Hero image on the case page. Required once the case page is built (phase 4/5). */
       cover: image().optional(),
       coverAlt: z.string().optional(),
+      /** "contain" shows the whole cover on coverBackground (Værsel: phones on green) */
+      coverFit: z.enum(['cover', 'contain']).default('cover'),
+      coverBackground: z.string().optional(),
       cardImage: image(),
       cardImageAlt: z.string(),
       /** Card title if it differs from the case title, e.g. "UX Cup" */
@@ -42,6 +52,8 @@ const cases = defineCollection({
       /** Logo above the table of contents (e.g. SATS wordmark) */
       tocLogo: image().optional(),
       tocLogoAlt: z.string().optional(),
+      /** Logo height in px (SATS wordmark 52, Værsel badge 180) */
+      tocLogoHeight: z.number().default(52),
       /** Slug of the case linked under "Neste prosjekt" */
       next: z.string().optional(),
       draft: z.boolean().default(false),
